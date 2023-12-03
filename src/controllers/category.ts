@@ -2,6 +2,15 @@ import Category from "../models/category";
 import { Request, Response } from "express";
 import {responseHttp } from "../helpers/helpers";
 
+export const findOneCategory=async (req:Request,res:Response)=>{
+    try {
+        const id=req.params.id;
+        return res.status(200).json(responseHttp(200,true,"Categoria creada correctamente",await Category.findOne({_id:id})));
+    } catch (error) {
+        return res.status(400).json(responseHttp(400,false,"Error en el servidor",null));
+    }
+}
+
 export const saveCategory=async(req:Request,res:Response)=>{
     try {
         const data=req.body;
@@ -16,7 +25,7 @@ export const saveCategory=async(req:Request,res:Response)=>{
         await newCategory.save();
         return res.status(200).json(responseHttp(200,true,"Categoria creada correctamente",newCategory));
     } catch (error) {
-        return res.status(400).json(responseHttp(400,false,"Error al crear categoria",null));
+        return res.status(400).json(responseHttp(400,false,"Error en el servidor",null));
     }
 }
 
@@ -25,7 +34,7 @@ export const getAllCategory=async (req:Request,res:Response)=>{
         const allAllCategories=await Category.find();
         return res.status(200).json(responseHttp(200,true,"Categoria encontradas",allAllCategories));
     } catch (error) {
-        return res.status(400).json(responseHttp(400,false,"Error al obtener las categorias",null));
+        return res.status(400).json(responseHttp(400,false,"Error en el servidor",null));
     }
 }
 
@@ -38,7 +47,7 @@ export const deleteCategory=async (req:Request,res:Response)=>{
         }
         return res.status(200).json(responseHttp(200,true,"Categoria eliminada correctamente",null));
     } catch (error) {
-        return res.status(400).json(responseHttp(400,false,"Error el eliminar la categoria",null));
+        return res.status(400).json(responseHttp(400,false,"Error en el servidor",null));
     }
 }
 
@@ -53,6 +62,6 @@ export const updateCategory=async (req:Request,res:Response)=>{
         const categoryWithDataNew=await Category.findOne({_id:id});
         return res.status(200).json(responseHttp(200,true,"Categoria editada correctamente",categoryWithDataNew));
     } catch (error) {
-        return res.status(400).json(responseHttp(400,false,"Error en actualizar la categoria",null));
+        return res.status(400).json(responseHttp(400,false,"Error en el servidor",null));
     }
 }
