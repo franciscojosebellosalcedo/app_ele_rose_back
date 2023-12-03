@@ -14,7 +14,7 @@ export const saveCategory=async(req:Request,res:Response)=>{
             return res.status(400).json(responseHttp(400,false,"Error al crear categoria",null));
         }
         await newCategory.save();
-        return res.status(201).json(responseHttp(201,true,"Categoria creada correctamente",newCategory));
+        return res.status(200).json(responseHttp(200,true,"Categoria creada correctamente",newCategory));
     } catch (error) {
         return res.status(400).json(responseHttp(400,false,"Error al crear categoria",null));
     }

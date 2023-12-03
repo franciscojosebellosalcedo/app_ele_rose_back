@@ -19,7 +19,7 @@ export const getNewAccessToken=async (req:Request,res:Response)=>{
                 const idUser=Object(data)._id;
                 const userFound=await User.findOne({_id:idUser});
                 if(userFound){
-                    const dataToken={email:userFound?.email,_id:userFound?._id,biography:userFound?.biography};
+                    const dataToken={name:userFound?.name,email:userFound?.email,_id:userFound?._id};
                     const newAccessToken=jwt.sign(dataToken,(process.env.SECRET_ACCESS_TOKEN as string));
                     const newRefressToken=jwt.sign(dataToken,(process.env.SECRET_REFRESS_TOKEN as string));
                     await userFound.save();
@@ -45,7 +45,7 @@ export const userLogin=async (req:Request,res:Response)=>{
         if(!isPasswordValid){
             return res.status(400).json(responseHttp(400,false,"Correo o contraseña no valida"));
         }
-        const dataUser={email:userFound?.email,_id:userFound._id,biography:userFound?.biography};
+        const dataUser={name:userFound?.name,email:userFound?.email,_id:userFound?._id};
         const accessToken=jwt.sign(dataUser,process.env.SECRET_ACCESS_TOKEN as string,{algorithm:"HS256"});
         userFound.save();
         const refressToken=jwt.sign(dataUser,process.env.SECRET_REFRESS_TOKEN as string,{algorithm:"HS256"});
@@ -120,7 +120,7 @@ export const updateUser= async (req:Request,res:Response)=>{
             const responseUpdated=await User.findOneAndUpdate({_id:id},{...dataNew});
             if(responseUpdated){
                 const userUpdate=await User.findOne({_id:id});
-                return res.status(200).json(responseHttp(200,true,"Datos actualizados",{_id:userUpdate?._id,email:userUpdate?.email,biography:userUpdate?.biography}));
+                return res.status(200).json(responseHttp(200,true,"Datos actualizados",{_id:userUpdate?._id,name:userFound?.name,email:userFound?.email}));
             }
             return res.status(400).json(responseHttp(400,false,"Error al actualizar el usuario"));
         }

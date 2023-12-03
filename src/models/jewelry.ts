@@ -9,6 +9,10 @@ const jewelrySchema=new mongoose.Schema({
         type:String,
         trim:true
     },
+    color:{
+        type:String,
+        enum:["Dorado","Plateado"]
+    },
     category:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Category"
