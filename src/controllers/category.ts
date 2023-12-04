@@ -5,7 +5,11 @@ import {responseHttp } from "../helpers/helpers";
 export const findOneCategory=async (req:Request,res:Response)=>{
     try {
         const id=req.params.id;
-        return res.status(200).json(responseHttp(200,true,"Categoria creada correctamente",await Category.findOne({_id:id})));
+        const categoryFound=await Category.findOne({_id:id});
+        if(categoryFound){
+            return res.status(200).json(responseHttp(200,true,"Categoria encontrada",categoryFound));
+        }
+        return res.status(200).json(responseHttp(400,false,"Categoria no encontrada",null));
     } catch (error) {
         return res.status(400).json(responseHttp(400,false,"Error en el servidor",null));
     }
@@ -15,15 +19,16 @@ export const saveCategory=async(req:Request,res:Response)=>{
     try {
         const data=req.body;
         const categoryFound=await Category.findOne({name:data.name});
-        if(categoryFound){
-            return res.status(400).json(responseHttp(400,false,"Categoria ya existente",null));
+        if(!categoryFound){
+            const newCategory=new Category({...data});
+            if(!newCategory){
+                return res.status(400).json(responseHttp(400,false,"Error al crear categoria",null));
+            }
+            await newCategory.save();
+            return res.status(200).json(responseHttp(200,true,"Categoria creada correctamente",newCategory));
         }
-        const newCategory=new Category({...data});
-        if(!newCategory){
-            return res.status(400).json(responseHttp(400,false,"Error al crear categoria",null));
-        }
-        await newCategory.save();
-        return res.status(200).json(responseHttp(200,true,"Categoria creada correctamente",newCategory));
+        return res.status(400).json(responseHttp(400,false,"Categoria ya existente",null));
+        
     } catch (error) {
         return res.status(400).json(responseHttp(400,false,"Error en el servidor",null));
     }
@@ -31,7 +36,7 @@ export const saveCategory=async(req:Request,res:Response)=>{
 
 export const getAllCategory=async (req:Request,res:Response)=>{
     try {
-        const allAllCategories=await Category.find();
+        const allAllCategories=await Category.find().sort({createdAt:-1});
         return res.status(200).json(responseHttp(200,true,"Categoria encontradas",allAllCategories));
     } catch (error) {
         return res.status(400).json(responseHttp(400,false,"Error en el servidor",null));
