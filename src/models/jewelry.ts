@@ -25,7 +25,7 @@ const jewelrySchema=new mongoose.Schema({
         type:Boolean,
         default:false
     },
-    amout:{
+    amount:{
         type:Number,
     },
     percentage:{
