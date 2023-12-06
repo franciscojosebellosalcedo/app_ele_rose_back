@@ -9,10 +9,6 @@ const jewelrySchema=new mongoose.Schema({
         type:String,
         trim:true
     },
-    color:{
-        type:String,
-        enum:["Dorado","Plateado"]
-    },
     category:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Category"
@@ -21,12 +17,9 @@ const jewelrySchema=new mongoose.Schema({
         type:Boolean,
         default:false
     },
-    hasPromotion:{
-        type:Boolean,
-        default:false
-    },
     amount:{
         type:Number,
+        default:0
     },
     percentage:{
         type:Number,
@@ -39,7 +32,7 @@ const jewelrySchema=new mongoose.Schema({
         type:Number,
         default:0
     },
-    image:{
+    imagen:{
         type:String,
         default:""
     }

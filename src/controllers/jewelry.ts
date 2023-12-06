@@ -15,7 +15,8 @@ export const saveJewelry=async (req:Request,res:Response)=>{
             return res.status(400).json(responseHttp(400,false,"Error al crear el producto",null));
         }
         await newJewelry.save();
-        return res.status(201).json(responseHttp(201,true,"Producto creado correctamente",newJewelry));
+        const jewelryCreated=await Jewelry.findOne({_id:newJewelry._id.toString()}).populate(["category"]);
+        return res.status(200).json(responseHttp(200,true,"Producto creado correctamente",jewelryCreated));
     } catch (error) {
         return res.status(400).json(responseHttp(400,false,"Error al crear el producto",null));
     }
@@ -23,8 +24,8 @@ export const saveJewelry=async (req:Request,res:Response)=>{
 
 export const getAllJewelry=async (req:Request,res:Response)=>{
     try {
-        const allJewelry=await Jewelry.find().populate(["category"]);
-        return res.status(200).json(responseHttp(200,false,"Productos",allJewelry));
+        const allJewelry=await Jewelry.find().populate(["category"]).sort({createdAt:-1});
+        return res.status(200).json(responseHttp(200,true,"Productos",allJewelry));
     } catch (error) {
         return res.status(400).json(responseHttp(400,false,"Error al crear el producto",null));
     }
