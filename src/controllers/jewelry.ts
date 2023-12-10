@@ -52,7 +52,7 @@ export const updateJewelry=async (req:Request,res:Response)=>{
         if(!update){
             return res.status(400).json(responseHttp(400,false,"Error al editar el producto",null));
         }
-        const jewelryUpdated=await Jewelry.findOne({_id:id});
+        const jewelryUpdated=await Jewelry.findOne({_id:id}).populate(["category"]);
         return res.status(200).json(responseHttp(200,true,"Producto editado correctamente",jewelryUpdated));
     } catch (error) {
         return res.status(400).json(responseHttp(400,false,"Error en editar el producto",null));
