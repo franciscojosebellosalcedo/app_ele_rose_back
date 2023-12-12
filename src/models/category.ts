@@ -5,6 +5,10 @@ const categorySchema=new mongoose.Schema({
         type:String,
         trim:true
     },
+    imagen:{
+        type:String,
+        trim:true
+    }
 },{timestamps:true});
 
 const Category= mongoose.model('Category',categorySchema);
