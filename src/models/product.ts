@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const jewelrySchema=new mongoose.Schema({
+const productSchema=new mongoose.Schema({
     name:{
         type:String,
         trim:true
@@ -8,6 +8,11 @@ const jewelrySchema=new mongoose.Schema({
     description:{
         type:String,
         trim:true
+    },
+    collection:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Collection",
+        required:false
     },
     category:{
         type:mongoose.Schema.Types.ObjectId,
@@ -32,11 +37,15 @@ const jewelrySchema=new mongoose.Schema({
         type:Number,
         default:0
     },
+    isAssociatedSlider:{
+        type:Boolean,
+        default:false
+    },
     imagen:{
         type:String,
         default:""
     }
 },{timestamps:true});
 
-const Jewelry= mongoose.model('Jewelry',jewelrySchema);
-export default Jewelry;
+const Product= mongoose.model('Product',productSchema);
+export default Product;
