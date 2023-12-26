@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import {responseHttp } from "../helpers/helpers";
-import Collection from "../models/Collection";
+import Collection from "../models/collection";
 
 export const updateCollection=async (req:Request, res:Response)=>{
     try {
