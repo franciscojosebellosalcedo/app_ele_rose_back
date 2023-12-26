@@ -11,6 +11,8 @@ app.use(cors());
 app.use(helmet());
 app.use(morgan("dev"));
 
+app.get("/",(req,res)=>res.send("Welcome API Ele Rose"));
+
 app.use("/api/ele-rose",routers);
 
 export default app;
