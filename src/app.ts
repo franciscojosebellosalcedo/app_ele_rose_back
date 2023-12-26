@@ -7,7 +7,7 @@ import morgan from "morgan";
 const app=express();
 
 app.use(express.json({limit:"200mb"}));
-app.use(cors());
+app.use(cors({origin:"*"}));
 app.use(helmet());
 app.use(morgan("dev"));
 
