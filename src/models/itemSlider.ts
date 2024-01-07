@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
 
 const itemSliderSchema=new mongoose.Schema({
-    typeItem:{
+    type:{
         type:String,
+        enum:["Producto","Colección"],
         trim:true
     },
-    item:{
+    valueItem:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"Collection" || "Product"
     }
 },{timestamps:true});
 

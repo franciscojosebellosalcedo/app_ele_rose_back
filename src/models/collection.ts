@@ -8,6 +8,10 @@ const collectionSchema=new mongoose.Schema({
     imagen:{
         type:String,
         trim:true
+    },
+    isAssociatedSlider:{
+        type:Boolean,
+        default:false
     }
 },{
     timestamps:true
