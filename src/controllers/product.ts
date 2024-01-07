@@ -1,4 +1,5 @@
 import Product from "../models/product";
+import ItemSlider from "../models/itemSlider";
 import { Request, Response } from "express";
 import {responseHttp } from "../helpers/helpers";
 
@@ -35,6 +36,12 @@ export const getAllProduct=async (req:Request,res:Response)=>{
 export const deleteProduct=async (req:Request,res:Response)=>{
     try {
         const id=req.params.id;
+        const itemsSlider=await ItemSlider.find();
+        const itemSliderFound=itemsSlider.find((item)=>item.valueItem?.toString()===id);
+        if(itemsSlider.length===1 && itemSliderFound){
+            return res.status(400).json(responseHttp(400,false,"Este producto pertence al slider y es el último elemento, debes dejar por lo menos un elemento en el slider",null));
+        }
+        await ItemSlider.deleteOne({valueItem:id});
         const productDeleted=await Product.findByIdAndDelete({_id:id});
         if(!productDeleted){
             return res.status(400).json(responseHttp(400,false,"Error al eliminar el producto",null));

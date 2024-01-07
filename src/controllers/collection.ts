@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import {responseHttp } from "../helpers/helpers";
 import Collection from "../models/collection";
+import ItemSlider from "../models/itemSlider";
 
 export const updateCollection=async (req:Request, res:Response)=>{
     try {
@@ -61,12 +62,19 @@ export const findOneCollection=async (req:Request, res:Response)=>{
 export const deleteCollection=async (req:Request, res:Response)=>{
     try {
         const id=req.params.id;
+        const itemsSlider=await ItemSlider.find();
+        const itemSliderFound=itemsSlider.find((item)=>item.valueItem?.toString()===id);
+        if(itemsSlider.length===1 && itemSliderFound){
+            return res.status(400).json(responseHttp(400,false,"Esta colección pertence al slider y es el último elemento, debes dejar por lo menos un elemento en el slider",null));
+        }
+        await ItemSlider.deleteOne({valueItem:id});
         const collectionDelete=await Collection.findOneAndDelete({_id:id});
         if(collectionDelete){
             return res.status(200).json(responseHttp(200,true,"Colleción eliminada",null));
         }
         return res.status(400).json(responseHttp(400,false,"Error al eliminar la colección",null));
     } catch (error) {
+        console.log(error)
         return res.status(400).json(responseHttp(400,false,"Se produjo un error en el servidor",null));
     }
 }
