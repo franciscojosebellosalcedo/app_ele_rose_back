@@ -51,8 +51,7 @@ export const deleteCategory=async (req:Request,res:Response)=>{
         if(!categoryDeleted){
             return res.status(400).json(responseHttp(400,false,"Error al eliminar la categoria",null));
         }
-        await Product.deleteMany({category:id});
-        return res.status(200).json(responseHttp(200,true,"Categoria eliminada correctamente, todos los productos relacionados a esta categoría fueron elimados",null));
+        return res.status(200).json(responseHttp(200,true,"Categoria eliminada correctamente",null));
     } catch (error) {
         return res.status(400).json(responseHttp(400,false,"Error en el servidor",null));
     }
