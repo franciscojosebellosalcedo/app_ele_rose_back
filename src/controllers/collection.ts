@@ -74,7 +74,6 @@ export const deleteCollection=async (req:Request, res:Response)=>{
         }
         return res.status(400).json(responseHttp(400,false,"Error al eliminar la colección",null));
     } catch (error) {
-        console.log(error)
         return res.status(400).json(responseHttp(400,false,"Se produjo un error en el servidor",null));
     }
 }
