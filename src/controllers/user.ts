@@ -45,11 +45,15 @@ export const userLogin=async (req:Request,res:Response)=>{
         if(!isPasswordValid){
             return res.status(400).json(responseHttp(400,false,"Correo o contraseña no valida"));
         }
-        const dataUser={name:userFound?.name,email:userFound?.email,_id:userFound?._id};
-        const accessToken=jwt.sign(dataUser,process.env.SECRET_ACCESS_TOKEN as string,{algorithm:"HS256"});
-        userFound.save();
-        const refressToken=jwt.sign(dataUser,process.env.SECRET_REFRESS_TOKEN as string,{algorithm:"HS256"});
-        return res.status(200).json(responseHttp(200,true,"Credenciales validas",{user:dataUser,refressToken,accessToken}));
+        if(userFound.isAdmin){
+            const dataUser={name:userFound?.name,email:userFound?.email,_id:userFound?._id};
+            const accessToken=jwt.sign(dataUser,process.env.SECRET_ACCESS_TOKEN as string,{algorithm:"HS256"});
+            userFound.save();
+            const refressToken=jwt.sign(dataUser,process.env.SECRET_REFRESS_TOKEN as string,{algorithm:"HS256"});
+            return res.status(200).json(responseHttp(200,true,"Credenciales validas",{user:dataUser,refressToken,accessToken}));
+        }
+        return res.status(400).json(responseHttp(400,false,"No tienes permisos en esta aplicación",null));
+        
     }catch(error){
         return res.status(400).json(responseHttp(400,false,"Se produjo un error en el servidor"));
     }
