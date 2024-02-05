@@ -13,9 +13,9 @@ export const saveUserPage=async (req:Request,res:Response)=>{
             return res.status(400).json(responseHttp(400,false,"Correo electrónico no válido",null));
         }
         const userFound=await User.find({$and : [{email:data.email}, {isAdmin:false}] });
-        if(userFound!=null || userFound!=undefined){
-            return res.status(400).json(responseHttp(400,false,"Usuario ya existente",null));
-        }
+        // if(userFound!=null || userFound!=undefined){
+        //     return res.status(400).json(responseHttp(400,false,"Usuario ya existente",null));
+        // }
         data.password=await bcrypt.hash(data.password,8);
         const newUserPage=new User({...data});
         if(newUserPage){
