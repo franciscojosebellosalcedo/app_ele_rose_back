@@ -12,7 +12,7 @@ export const saveUserPage=async (req:Request,res:Response)=>{
         if(!isEmailValid(data.email)){
             return res.status(400).json(responseHttp(400,false,"Correo electrónico no válido",null));
         }
-        const userFound=await User.find({email:data.email,isAdmin:false});
+        const userFound=await User.find({$and : [{email:data.email}, {isAdmin:false}] });
         if(userFound!=null || userFound!=undefined){
             return res.status(400).json(responseHttp(400,false,"Usuario ya existente",null));
         }
