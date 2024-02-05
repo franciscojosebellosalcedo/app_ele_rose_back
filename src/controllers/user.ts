@@ -12,20 +12,20 @@ export const saveUserPage=async (req:Request,res:Response)=>{
         if(!isEmailValid(data.email)){
             return res.status(400).json(responseHttp(400,false,"Correo electrónico no válido",null));
         }
-        const userFound=await User.find({$and : [{email:data.email}, {isAdmin:false}] });
-        if(!userFound){
-            data.password=await bcrypt.hash(data.password,8);
-            const newUserPage=new User({...data});
-            if(newUserPage){
-                const userPageCreated=await newUserPage.save();
-                const payload={name:userPageCreated.name,phone:userPageCreated.phone,address:userPageCreated.address,email:userPageCreated.email,_id:userPageCreated._id}
-                const accessToken=jwt.sign({_id:payload._id},process.env.SECRET_ACCESS_TOKEN as string,{algorithm:"HS256"});
-                const refressToken=jwt.sign({_id:payload._id},process.env.SECRET_REFRESS_TOKEN as string,{algorithm:"HS256"});
-                return res.status(201).json(responseHttp(201,true,"",{user:payload,accessToken:accessToken,refressToken:refressToken}));
-            }
-            return res.status(400).json(responseHttp(400,false,"Error al crear la cuenta",null));
+        const userFound=await User.findOne({$and : [{email:data.email}, {isAdmin:false}] });
+        if(userFound){
+            return res.status(400).json(responseHttp(400,false,"Usuario ya existente",null));
         }
-        return res.status(400).json(responseHttp(400,false,"Usuario ya existente",null));
+        data.password=await bcrypt.hash(data.password,8);
+        const newUserPage=new User({...data});
+        if(newUserPage){
+            const userPageCreated=await newUserPage.save();
+            const payload={name:userPageCreated.name,phone:userPageCreated.phone,address:userPageCreated.address,email:userPageCreated.email,_id:userPageCreated._id}
+            const accessToken=jwt.sign({_id:payload._id},process.env.SECRET_ACCESS_TOKEN as string,{algorithm:"HS256"});
+            const refressToken=jwt.sign({_id:payload._id},process.env.SECRET_REFRESS_TOKEN as string,{algorithm:"HS256"});
+            return res.status(201).json(responseHttp(201,true,"",{user:payload,accessToken:accessToken,refressToken:refressToken}));
+        }
+        return res.status(400).json(responseHttp(400,false,"Error al crear la cuenta",null));
 
     } catch (error) {
         return res.status(400).json(responseHttp(400,false,"Se produjo un error en el servidor"));
