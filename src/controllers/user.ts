@@ -69,7 +69,7 @@ export const getNewAccessToken=async (req:Request,res:Response)=>{
                 const idUser=Object(data)._id;
                 const userFound=await User.findOne({_id:idUser});
                 if(userFound){
-                    const dataToken={name:userFound?.name,email:userFound?.email,_id:userFound?._id};
+                    const dataToken={name:userFound?.name,email:userFound?.email,_id:userFound?._id,phone:userFound.phone,address:userFound.address};
                     const newAccessToken=jwt.sign(dataToken,(process.env.SECRET_ACCESS_TOKEN as string));
                     const newRefressToken=jwt.sign(dataToken,(process.env.SECRET_REFRESS_TOKEN as string));
                     await userFound.save();
