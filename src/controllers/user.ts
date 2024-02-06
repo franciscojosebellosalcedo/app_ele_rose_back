@@ -35,7 +35,7 @@ export const saveUserPage=async (req:Request,res:Response)=>{
 export const loginUserPage=async (req:Request,res:Response)=>{
     try{
         const data=req.body;
-        const userFound=await User.findOne({email:data.email});
+        const userFound=await User.findOne({$and:[{email:data.email,isAdmin:false}]});
         if(!userFound){
             return res.status(400).json(responseHttp(400,false,"Correo o contraseña no valida"));
         }
