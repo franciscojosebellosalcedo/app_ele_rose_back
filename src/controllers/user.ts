@@ -23,7 +23,7 @@ export const saveUserPage=async (req:Request,res:Response)=>{
             const payload={name:userPageCreated.name,phone:userPageCreated.phone,address:userPageCreated.address,email:userPageCreated.email,_id:userPageCreated._id}
             const accessToken=jwt.sign({_id:payload._id},process.env.SECRET_ACCESS_TOKEN as string,{algorithm:"HS256"});
             const refressToken=jwt.sign({_id:payload._id},process.env.SECRET_REFRESS_TOKEN as string,{algorithm:"HS256"});
-            return res.status(201).json(responseHttp(201,true,"Cuenta creada exitosamente",{user:payload,accessToken:accessToken,refressToken:refressToken}));
+            return res.status(200).json(responseHttp(200,true,"Cuenta creada exitosamente",{user:payload,accessToken:accessToken,refressToken:refressToken}));
         }
         return res.status(400).json(responseHttp(400,false,"Error al crear la cuenta",null));
 
