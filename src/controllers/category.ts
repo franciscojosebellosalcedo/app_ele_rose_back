@@ -1,7 +1,7 @@
 import Category from "../models/category";
 import Product from "../models/product";
 import { Request, Response } from "express";
-import {responseHttp } from "../helpers/helpers";
+import {responseHttp } from "../utils/utils";
 
 export const findOneCategory=async (req:Request,res:Response)=>{
     try {

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import {responseHttp } from "../helpers/helpers";
+import {responseHttp, sendMessageWhatsapp } from "../utils/utils";
 import Order from "../models/ order";
 
 
@@ -8,7 +8,14 @@ export const saveOrder=async (req:Request,res:Response)=>{
         const data=req.body;
         const newOrder=new Order({...data});
         if(newOrder){
-            const orderCreated=await newOrder.save();
+            const orderCreated=await (await (await newOrder.save()).populate("user")).populate("listProducts.product");
+            const {user,listProducts,total}=orderCreated;
+
+            const responseMessageTwillio=await sendMessageWhatsapp({
+                user,
+                listProducts,
+                total
+            });
             return res.status(201).json(responseHttp(201,true,"Pedido enviado exitosamente",orderCreated));
         }
         return res.status(400).json(responseHttp(400,false,"Error al enviar el pedido",null));

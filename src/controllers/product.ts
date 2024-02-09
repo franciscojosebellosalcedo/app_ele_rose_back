@@ -1,7 +1,7 @@
 import Product from "../models/product";
 import ItemSlider from "../models/itemSlider";
 import { Request, Response } from "express";
-import {responseHttp } from "../helpers/helpers";
+import {responseHttp } from "../utils/utils";
 
 
 export const saveProduct=async (req:Request,res:Response)=>{

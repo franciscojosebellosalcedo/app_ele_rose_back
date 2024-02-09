@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import {  responseHttp} from "../helpers/helpers";
+import {  responseHttp} from "../utils/utils";
 import jwt from "jsonwebtoken";
 
 export const checkAuthorization=async (req:Request,res:Response,next:NextFunction)=>{

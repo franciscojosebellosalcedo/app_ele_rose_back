@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import {responseHttp } from "../helpers/helpers";
+import {responseHttp } from "../utils/utils";
 import ItemSlider from "../models/itemSlider";
 import Collection from "../models/collection";
 import Product from "../models/product";

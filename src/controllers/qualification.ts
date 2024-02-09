@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import {responseHttp } from "../helpers/helpers";
+import {responseHttp } from "../utils/utils";
 import Qualification from '../models/qualification';
 
 export const saveQualification=async (req:Request,res:Response)=>{
