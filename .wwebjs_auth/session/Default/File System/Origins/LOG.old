@@ -1,3 +1,5 @@
-2024/02/09-18:07:51.977 15303 Reusing MANIFEST /Users/developer/Documents/app_ele_rose/app_ele_rose_back/.wwebjs_auth/session/Default/File System/Origins/MANIFEST-000001
-2024/02/09-18:07:51.978 15303 Recovering log #3
-2024/02/09-18:07:51.978 15303 Reusing old log /Users/developer/Documents/app_ele_rose/app_ele_rose_back/.wwebjs_auth/session/Default/File System/Origins/000003.log 
+2024/02/09-20:35:15.206 e5c Log #3: 3 ops saved to Table #4 OK
+2024/02/09-20:35:15.208 e5c Archiving C:\Users\USER\Documents\ele_rose\app_ele_rose_back\.wwebjs_auth\session\Default\File System\Origins/000003.log: OK
+2024/02/09-20:35:15.208 e5c Table #4: 3 entries OK
+2024/02/09-20:35:15.212 e5c Archiving C:\Users\USER\Documents\ele_rose\app_ele_rose_back\.wwebjs_auth\session\Default\File System\Origins/MANIFEST-000001: OK
+2024/02/09-20:35:15.231 e5c **** Repaired leveldb C:\Users\USER\Documents\ele_rose\app_ele_rose_back\.wwebjs_auth\session\Default\File System\Origins; recovered 1 files; 181 bytes. Some data may have been lost. ****

@@ -1,4 +1,4 @@
-// import whatsapp  from "../config/whatsapp";
+import { sendMessageWhatsappUtil } from "../config/whatsapp";
 
 export const responseHttp = (
   status: number,
@@ -14,9 +14,6 @@ export const responseHttp = (
   };
 };
 
-// const accountSid = "ACb8d1dc56194790a60cf744588560f4b7";
-// const authToken = "b72f18461ff40e91a753a12d20a57419";
-// const client = require("twilio")(accountSid, authToken);
 export const sendMessageWhatsapp = async (data: any) => {
   try {
     const {listProducts}=data;
@@ -28,22 +25,7 @@ export const sendMessageWhatsapp = async (data: any) => {
         templateMesage+=smallTemplate;
     }
     templateMesage+=`PRECIO TOTAL: $${total}`;
-
-
-    // const tel="+573113261681";
-    // const chatId=tel.substring(1) + "@c.us";
-    // const number_details=await whatsapp.getNumberId(chatId);
-    // if(number_details){
-    //   await whatsapp.sendMessage(chatId,templateMesage);
-    // }
-
-
-    // client.messages.create({
-    //     body: templateMesage,
-    //     from: 'whatsapp:+14155238886',
-    //     to: 'whatsapp:+573113261681'
-    // }).then((message: any) => console.log(message.sid));
-    
+    return await sendMessageWhatsappUtil(templateMesage)
   } catch (error) {
     return error;
   }
@@ -56,5 +38,4 @@ export const isEmailValid = (email: string) => {
 };
 
 
-//WTHASAPP
 

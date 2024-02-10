@@ -10,8 +10,7 @@ export const saveOrder=async (req:Request,res:Response)=>{
         if(newOrder){
             const orderCreated=await (await (await newOrder.save()).populate("user")).populate("listProducts.product");
             const {user,listProducts,total}=orderCreated;
-
-            const responseMessageTwillio=await sendMessageWhatsapp({
+            await sendMessageWhatsapp({
                 user,
                 listProducts,
                 total

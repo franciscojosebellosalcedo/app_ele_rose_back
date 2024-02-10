@@ -1,3 +1,2 @@
-2024/02/09-18:08:03.461 6c03 Reusing MANIFEST /Users/developer/Documents/app_ele_rose/app_ele_rose_back/.wwebjs_auth/session/Default/Local Storage/leveldb/MANIFEST-000001
-2024/02/09-18:08:03.462 6c03 Recovering log #3
-2024/02/09-18:08:03.462 6c03 Reusing old log /Users/developer/Documents/app_ele_rose/app_ele_rose_back/.wwebjs_auth/session/Default/Local Storage/leveldb/000003.log 
+2024/02/09-20:35:09.042 e5c Creating DB C:\Users\USER\Documents\ele_rose\app_ele_rose_back\.wwebjs_auth\session\Default\Local Storage\leveldb since it was missing.
+2024/02/09-20:35:09.067 e5c Reusing MANIFEST C:\Users\USER\Documents\ele_rose\app_ele_rose_back\.wwebjs_auth\session\Default\Local Storage\leveldb/MANIFEST-000001

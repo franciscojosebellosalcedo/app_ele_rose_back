@@ -1,19 +1,11 @@
-const {Client,LocalAuth}=require("whatsapp-web.js");
-const qrcode=require("qrcode-terminal");
+const accountSid = 'AC54b329a507fee0c3032ff269dbb16182';
+const authToken = '3db629990a0b476c13d35a6370081f32';
+const client = require('twilio')(accountSid, authToken);
 
-const whatsapp=new Client({
-    authStrategy:new LocalAuth()
-});
-
-whatsapp.on("qr",(qr:any)=>{
-    qrcode.generate(qr,{
-        small:true
+export const sendMessageWhatsappUtil=async (templateMesage:string)=>{
+    return await client.messages.create({
+        body: templateMesage,
+        from: 'whatsapp:+14155238886',
+        to: 'whatsapp:+573113261681'
     })
-});
-
-whatsapp.on("ready",()=>{
-    console.log("Client is ready")
-})
-
-export default whatsapp;
-
+}

@@ -1,3 +1,2 @@
-2024/02/09-18:08:03.474 6c03 Reusing MANIFEST /Users/developer/Documents/app_ele_rose/app_ele_rose_back/.wwebjs_auth/session/Default/Service Worker/Database/MANIFEST-000001
-2024/02/09-18:08:03.474 6c03 Recovering log #3
-2024/02/09-18:08:03.475 6c03 Reusing old log /Users/developer/Documents/app_ele_rose/app_ele_rose_back/.wwebjs_auth/session/Default/Service Worker/Database/000003.log 
+2024/02/09-20:35:15.080 23c8 Creating DB C:\Users\USER\Documents\ele_rose\app_ele_rose_back\.wwebjs_auth\session\Default\Service Worker\Database since it was missing.
+2024/02/09-20:35:15.091 23c8 Reusing MANIFEST C:\Users\USER\Documents\ele_rose\app_ele_rose_back\.wwebjs_auth\session\Default\Service Worker\Database/MANIFEST-000001
