@@ -10,12 +10,15 @@ export const saveOrder=async (req:Request,res:Response)=>{
         if(newOrder){
             const orderCreated=await (await (await newOrder.save()).populate("user")).populate("listProducts.product");
             const {user,listProducts,total}=orderCreated;
-            await sendMessageWhatsapp({
+            const response=await sendMessageWhatsapp({
                 user,
                 listProducts,
                 total
             });
-            return res.status(201).json(responseHttp(201,true,"Pedido enviado exitosamente",orderCreated));
+            if(response.status==="queued"){
+                return res.status(201).json(responseHttp(201,true,"Pedido enviado exitosamente",orderCreated));
+            }
+            return res.status(400).json(responseHttp(400,false,"Error al enviar el pedido",null));
         }
         return res.status(400).json(responseHttp(400,false,"Error al enviar el pedido",null));
 
