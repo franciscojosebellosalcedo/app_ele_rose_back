@@ -15,14 +15,16 @@ export const saveOrder=async (req:Request,res:Response)=>{
                 listProducts,
                 total
             });
-            if(response.status==="queued"){
-                return res.status(201).json(responseHttp(201,true,"Pedido enviado exitosamente",orderCreated));
+            console.log(response)
+            if(response.errorMessage){
+                return res.status(400).json(responseHttp(400,false,"Error al enviar el pedido",null));
             }
-            return res.status(400).json(responseHttp(400,false,"Error al enviar el pedido",null));
+            return res.status(201).json(responseHttp(201,true,"Pedido enviado exitosamente",orderCreated));
         }
         return res.status(400).json(responseHttp(400,false,"Error al enviar el pedido",null));
 
     } catch (error) {
+        console.log(error)
         return res.status(400).json(responseHttp(400,false,"Error en el servidor",null));
     }
 }
