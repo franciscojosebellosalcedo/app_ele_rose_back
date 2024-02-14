@@ -1,11 +1,11 @@
-import axios from "axios";
 export const sendMessageWhatsapp = async (data: any) => {
   try {
+
     let template = "";
     const { listProducts, total, user } = data;
     for (let index = 0; index < listProducts.length; index++) {
       const item = listProducts[index];
-      template += `${index + 1}) ${item.product.name} X${item.amount} $${item.product.pricePromotion >0 ? item.product.pricePromotion:item.product.realPrice}\n`;
+      template += `${item.product.name} X${item.amount} $${item.product.pricePromotion >0 ? item.product.pricePromotion:item.product.realPrice} -- `;
     }
     const dataWhatsapp = {
       messaging_product: "whatsapp",
