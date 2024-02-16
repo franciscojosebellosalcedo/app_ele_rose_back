@@ -3,10 +3,13 @@ import mongoose from "mongoose";
 const qualificationSchema=new mongoose.Schema({
     title:{
         type:String,
-        trim:true
+        trim:true,
+        default:null
     },
     description:{
         type:String,
+        trim:true,
+        default:null
     },
     score:{
         type:Number,
