@@ -59,7 +59,7 @@ export const loginUserPage=async (req:Request,res:Response)=>{
 export const getNewAccessToken=async (req:Request,res:Response)=>{
     try{
         const headers=req.headers;
-        const parts=(headers["access-token"] as string).split(" ");
+        const parts=(headers["access-x"] as string).split(" ");
         if(parts[1]!=="bearer"){
             const refressToken=parts[1];
             jwt.verify(refressToken,(process.env.SECRET_REFRESS_TOKEN as string),async (error,data)=>{
