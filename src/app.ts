@@ -8,7 +8,7 @@ config();
 const app=express();
 
 app.use(express.json({limit:"200mb"}));
-app.use(cors({origin:"*"}));
+app.use(cors({origin:["https://page-ele-rose.vercel.app/"]}));
 app.use(helmet());
 app.use(morgan("dev"));
 
