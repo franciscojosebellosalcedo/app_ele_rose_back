@@ -3,11 +3,12 @@ import helmet from "helmet";
 import cors from "cors";
 import routers from "./routes/router";
 import morgan from "morgan";
-
+import {config} from 'dotenv';
+config();
 const app=express();
 
 app.use(express.json({limit:"200mb"}));
-app.use(cors({origin:"https://page-ele-rose.vercel.app"}));
+app.use(cors({origin:process.env.ORIGIN_PRODUCTION as string}));
 app.use(helmet());
 app.use(morgan("dev"));
 
