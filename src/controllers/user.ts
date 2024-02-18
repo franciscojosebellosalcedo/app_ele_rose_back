@@ -7,6 +7,25 @@ dotenv.config();
 import jwt from "jsonwebtoken";
 import { getTemplateNodemailer, transporter } from "../config/nodemailer";
 
+export const setNewPassword=async(req:Request,res:Response)=>{
+    try {
+        const token=req.params.token;
+        const userFound=await User.findOne({tokenResetPassword:token});
+        if(!userFound){
+            return res.status(400).json(responseHttp(400,false,"Token no valido"));
+        }
+        jwt.verify(token,process.env.SECRET_TOKEN_RESET_PASSWORD as string,(error,decoded)=>{
+            if(error){
+                console.log(error)
+            }else{
+                console.log(decoded);
+            }
+        })
+    } catch (error) {
+        return res.status(400).json(responseHttp(400,false,"Se produjo un error en el servidor"));
+    }
+}
+
 export const verifyEmailUser=async (req:Request,res:Response)=>{
     try {
         const data=req.body;
@@ -23,12 +42,13 @@ export const verifyEmailUser=async (req:Request,res:Response)=>{
         const dataPayload={"_id":userFound._id,"exp":1679741712};
         const token=jwt.sign({_id:dataPayload._id},process.env.SECRET_TOKEN_RESET_PASSWORD as string,{algorithm:"HS256"});
         await User.findOneAndUpdate({_id:userFound._id},{tokenResetPassword:token});
+        const url=process.env.URL_RESET_PASSWORD+`/${token}` as string;
         await transporter.sendMail( {
             from: process.env.NODEMAILER_USER as string,
             to: data.email,
             subject: "Recuperación de cuenta",
-            text: "Hola",
-            html: getTemplateNodemailer(),
+            text: "",
+            html: getTemplateNodemailer(url),
         });
         return res.status(200).json(responseHttp(200,true,"Te hemos enviado las intrucciones a su correo electrónico"));
     } catch (error) {
