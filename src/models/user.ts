@@ -19,6 +19,11 @@ const userSchema=new mongoose.Schema({
     password:{
         type:String,
     },
+    tokenResetPassword:{
+        type:String,
+        default:"",
+        trim:true
+    },
     isAdmin:{
         type:Boolean,
         default:false

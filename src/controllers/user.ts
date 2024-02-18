@@ -5,6 +5,36 @@ import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 dotenv.config();
 import jwt from "jsonwebtoken";
+import { getTemplateNodemailer, transporter } from "../config/nodemailer";
+
+export const verifyEmailUser=async (req:Request,res:Response)=>{
+    try {
+        const data=req.body;
+        if(isEmailValid(data.email)===false){
+            return res.status(400).json(responseHttp(400,false,"Correo no válido"));
+        }
+        const userFound=await User.findOne({$and : [{email:data.email}, {isAdmin:false}] });
+        if(!userFound){
+            return res.status(404).json(responseHttp(404,false,"Asegurate de estar registrado"));
+        }
+        if(userFound.tokenResetPassword.length>0){
+            return res.status(200).json(responseHttp(200,true,"Revisa tu correo electrónico y sigue las intrucciones"));
+        }
+        const dataPayload={"_id":userFound._id,"exp":1679741712};
+        const token=jwt.sign({_id:dataPayload._id},process.env.SECRET_TOKEN_RESET_PASSWORD as string,{algorithm:"HS256"});
+        await User.findOneAndUpdate({_id:userFound._id},{tokenResetPassword:token});
+        await transporter.sendMail( {
+            from: process.env.NODEMAILER_USER as string,
+            to: data.email,
+            subject: "Recuperación de cuenta",
+            text: "Hola",
+            html: getTemplateNodemailer(),
+        });
+        return res.status(200).json(responseHttp(200,true,"Te hemos enviado las intrucciones a su correo electrónico"));
+    } catch (error) {
+        return res.status(400).json(responseHttp(400,false,"Se produjo un error en el servidor"));
+    }
+}
 
 export const saveUserPage=async (req:Request,res:Response)=>{
     try {

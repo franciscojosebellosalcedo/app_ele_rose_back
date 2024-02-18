@@ -13,5 +13,6 @@ router.delete("/:id",checkAuthorization,controller.deleteUser);
 router.put("/:id",checkAuthorization,controller.updateUser);
 router.get("/",checkAuthorization,controller.getAllUsers);
 router.get("/refress-token",controller.getNewAccessToken);
+router.post("/reset-password",controller.verifyEmailUser);
 
 export default router;
