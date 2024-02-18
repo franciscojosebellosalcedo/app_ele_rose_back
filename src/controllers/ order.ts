@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import {responseHttp } from "../utils/utils";
 import Order from "../models/ order";
 import { sendMessageWhatsapp } from "../config/whatsapp";
+import Product from "../models/product";
 
 
 export const saveOrder=async (req:Request,res:Response)=>{
@@ -11,11 +12,17 @@ export const saveOrder=async (req:Request,res:Response)=>{
         if(newOrder){
             const orderCreated=await (await (await newOrder.save()).populate("user")).populate("listProducts.product");
             const {user,listProducts,total}=orderCreated;
-            const response:any=await sendMessageWhatsapp({
-                user,
-                listProducts,
-                total
-            });
+            for (let index = 0; index < data.listProducts.length; index++) {
+                const item = data.listProducts[index];
+                if(item.product){
+                    await Product.findOneAndUpdate({_id:item.product._id},{amount:item.product.amount-item.amount});
+                }
+            }
+            // const response:any=await sendMessageWhatsapp({
+            //     user,
+            //     listProducts,
+            //     total
+            // });
             return res.status(201).json(responseHttp(201,true,"Pedido enviado exitosamente",orderCreated));
         }
         return res.status(400).json(responseHttp(400,false,"Error al enviar el pedido",null));
