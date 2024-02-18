@@ -10,15 +10,19 @@ import { getTemplateNodemailer, transporter } from "../config/nodemailer";
 export const setNewPassword=async(req:Request,res:Response)=>{
     try {
         const token=req.params.token;
+        const dataNewPassword=req.body;
         const userFound=await User.findOne({tokenResetPassword:token});
         if(!userFound){
-            return res.status(400).json(responseHttp(400,false,"Token no valido"));
+            return res.status(400).json(responseHttp(400,false,"Token no valido o ya expiró"));
         }
-        jwt.verify(token,process.env.SECRET_TOKEN_RESET_PASSWORD as string,(error,decoded)=>{
+        jwt.verify(token,process.env.SECRET_TOKEN_RESET_PASSWORD as string,async (error,decoded)=>{
             if(error){
-                console.log(error)
+                return res.status(400).json(responseHttp(400,false,"Token no valido o ya expiró"));
             }else{
-                console.log(decoded);
+                const data=Object(decoded);
+                const newPasswordUser=await bcrypt.hash(dataNewPassword.password,8);
+                await User.findOneAndUpdate({_id:data._id},{password:newPasswordUser,tokenResetPassword:""});
+                return res.status(200).json(responseHttp(200,true,"Tu contraseña fue restablecida correctamente"));
             }
         })
     } catch (error) {
