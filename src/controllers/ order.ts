@@ -28,6 +28,7 @@ export const saveOrder=async (req:Request,res:Response)=>{
         return res.status(400).json(responseHttp(400,false,"Error al enviar el pedido",null));
 
     } catch (error) {
+        console.log(error)
         return res.status(400).json(responseHttp(400,false,"Error en el servidor",null));
     }
 }
