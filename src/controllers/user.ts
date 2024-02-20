@@ -228,7 +228,7 @@ export const updateUser= async (req:Request,res:Response)=>{
             const responseUpdated=await User.findOneAndUpdate({_id:id},{...dataNew});
             if(responseUpdated){
                 const userUpdate=await User.findOne({_id:id});
-                return res.status(200).json(responseHttp(200,true,"Datos actualizados",{_id:userUpdate?._id,name:userFound?.name,email:userFound?.email}));
+                return res.status(200).json(responseHttp(200,true,"Datos actualizados correctamente",{_id:userUpdate?._id,name:userFound?.name,email:userFound?.email,phone:userFound?.phone,address:userFound?.address}));
             }
             return res.status(400).json(responseHttp(400,false,"Error al actualizar el usuario"));
         }
