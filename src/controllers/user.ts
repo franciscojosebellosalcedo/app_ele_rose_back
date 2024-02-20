@@ -54,7 +54,7 @@ export const verifyEmailUser=async (req:Request,res:Response)=>{
             text: "",
             html: getTemplateNodemailer(url),
         });
-        return res.status(200).json(responseHttp(200,true,"Te hemos enviado las intrucciones a su correo electrónico"));
+        return res.status(200).json(responseHttp(200,true,"Te hemos enviado las intrucciones a tu correo electrónico"));
     } catch (error) {
         return res.status(400).json(responseHttp(400,false,"Se produjo un error en el servidor"));
     }
