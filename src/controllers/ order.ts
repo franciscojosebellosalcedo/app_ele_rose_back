@@ -7,6 +7,12 @@ import { sendMessageWhatsapp } from "../config/whatsapp";
 export const saveOrder=async (req:Request,res:Response)=>{
     try {
         const data=req.body;
+        const ordersUser=await Order.find({user:data.user});
+        if(ordersUser.length>0){
+            data.num=ordersUser.length+1;
+        }else{
+            data.num=1;
+        }
         const newOrder=new Order({...data});
         if(newOrder){
             const orderCreated=await (await (await newOrder.save()).populate("user")).populate("listProducts.product");

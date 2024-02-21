@@ -20,6 +20,9 @@ const orderSchema = new Schema(
     total: {
       type: Number,
     },
+    num:{
+      type:Number
+    },
     statusOrder: {
       type: String,
       enum: ["Pending", "Finalized"],
