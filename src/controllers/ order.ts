@@ -37,7 +37,9 @@ export const getAllOrder=async (req:Request,res:Response)=>{
 export const getAllOrderByUser=async (req:Request,res:Response)=>{
     try {
         const idUser=req.params.idUser;
-        const allOrderFound=await Order.find({user:idUser.toString()}).populate('user').populate('listProducts.product');
+        const allOrderFound=await Order.find({user:idUser.toString()}).populate('user').populate('listProducts.product').sort({
+            createdAt:-1
+        });
         return res.status(200).json(responseHttp(200,true,"Pedidos encontrados",allOrderFound));
     } catch (error) {
         return res.status(400).json(responseHttp(400,false,"Error en el servidor",null));

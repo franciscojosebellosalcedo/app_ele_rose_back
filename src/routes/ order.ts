@@ -7,7 +7,7 @@ const router=Router();
 router.post("/",checkAuthorization,controller.saveOrder);
 router.get("/",checkAuthorization,controller.getAllOrder);
 router.get("/:idOrder",checkAuthorization,controller.getOrderById);
-router.get("/:idUser",checkAuthorization,controller.getAllOrderByUser);
+router.get("/allOrders/:idUser",checkAuthorization,controller.getAllOrderByUser);
 router.put("/:idOrder",checkAuthorization,controller.finishOrderById);
 
 export default router;
