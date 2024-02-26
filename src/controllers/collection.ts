@@ -42,7 +42,7 @@ export const saveCollection=async (req:Request, res:Response)=>{
 
 export const getAllCollection=async (req:Request, res:Response)=>{
     try {
-        const allCollections=await Collection.find();
+        const allCollections=await Collection.find().sort({createdAt:-1});
         return res.status(200).json(responseHttp(200,true,"Colleción creada",allCollections));
     } catch (error) {
         return res.status(400).json(responseHttp(400,false,"Se produjo un error en el servidor",null));
