@@ -20,5 +20,5 @@ const contactSchema=new Schema({
     }
 },{timestamps:true});
 
-const Contant=mongoose.model("Contact",contactSchema);
+const Contant=mongoose.model("InfoContact",contactSchema);
 export default Contant;
