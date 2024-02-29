@@ -26,7 +26,7 @@ export const saveProduct=async (req:Request,res:Response)=>{
 
 export const getAllProduct=async (req:Request,res:Response)=>{
     try {
-        const allProducts=await Product.find().populate(["category","collection"]).sort({createdAt:-1});
+        const allProducts=await Product.find().populate('category').populate('collection').sort({createdAt:-1});
         return res.status(200).json(responseHttp(200,true,"Productos",allProducts));
     } catch (error) {
         return res.status(400).json(responseHttp(400,false,"Error al obtener los productos",null));
