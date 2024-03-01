@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "ts-node-dev --respawn ./src/index.ts",
     "start": "node dist/index.js",
-    "build": "tsc"
+    "build": "netlify deploy --prod"
   },
   "keywords": [],
   "author": "",
