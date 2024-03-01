@@ -1,6 +1,6 @@
-import app from "./app";
+import app from "../src/app";
 import dotenv from "dotenv";
-import { connectToDB } from "./config/db";
+import { connectToDB } from "../src/config/db";
 dotenv.config();
 
 app.listen(process.env.PORT_SERVER);
