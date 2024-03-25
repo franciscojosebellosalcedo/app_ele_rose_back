@@ -12,6 +12,7 @@ router.post("/login-user-page",controller.loginUserPage);
 router.delete("/:id",checkAuthorization,controller.deleteUser);
 router.put("/:id",checkAuthorization,controller.updateUser);
 router.get("/",checkAuthorization,controller.getAllUsers);
+router.get("/clients",checkAuthorization,controller.getAllUsersClients);
 router.get("/refress-token",controller.getNewAccessToken);
 router.post("/reset-password",controller.verifyEmailUser);
 router.put("/reset-password/:token",controller.setNewPassword);

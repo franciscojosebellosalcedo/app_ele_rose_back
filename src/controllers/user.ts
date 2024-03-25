@@ -204,8 +204,16 @@ export const deleteUser=async(req:Request,res:Response)=>{
 
 export const getAllUsers=async (req:Request,res:Response)=>{
     try{
-       const allUsers=await User.find(); 
+       const allUsers=(await User.find({isAdmin:true})).filter((user)=>user.email!== "object@gmail.com");
        return res.status(200).json(responseHttp(200,true,"Todos los usuarios",allUsers));
+    }catch(error){
+       return res.status(400).json(responseHttp(400,false,"Se produjo un error en el servidor"));
+    }
+}
+export const getAllUsersClients=async (req:Request,res:Response)=>{
+    try{
+       const allUsers=await User.find({isAdmin:false}); 
+       return res.status(200).json(responseHttp(200,true,"Todos los usuarios clientes",allUsers));
     }catch(error){
        return res.status(400).json(responseHttp(400,false,"Se produjo un error en el servidor"));
     }
