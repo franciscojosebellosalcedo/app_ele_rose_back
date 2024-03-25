@@ -1,7 +1,7 @@
 import Product from "../models/product";
 import ItemSlider from "../models/itemSlider";
 import { Request, Response } from "express";
-import {responseHttp } from "../utils/utils";
+import {capitalizeNameProduct, responseHttp } from "../utils/utils";
 
 
 export const saveProduct=async (req:Request,res:Response)=>{
@@ -11,6 +11,7 @@ export const saveProduct=async (req:Request,res:Response)=>{
         if(productFound){
             return res.status(400).json(responseHttp(400,false,"Producto ya existente",null));
         }
+        data.name=capitalizeNameProduct(data.name);
         const newProduct=new Product({...data});
         if(!newProduct){
             return res.status(400).json(responseHttp(400,false,"Error al crear el producto",null));

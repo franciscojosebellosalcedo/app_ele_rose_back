@@ -7,7 +7,7 @@ import { sendMessageWhatsapp } from "../config/whatsapp";
 export const saveOrder=async (req:Request,res:Response)=>{
     try {
         const data=req.body;
-        const ordersUser=await Order.find({user:data.user});
+        const ordersUser=await Order.find({user:data.user,statusOrder:"enabled"});
         if(ordersUser.length>0){
             data.num=ordersUser.length+1;
         }else{
@@ -33,7 +33,9 @@ export const saveOrder=async (req:Request,res:Response)=>{
 
 export const getAllOrder=async (req:Request,res:Response)=>{
     try {
-        const allOrder=await Order.find().populate('user').populate('listProducts.product');
+        const allOrder=await Order.find().populate('user').populate('listProducts.product').sort({
+            createdAt:-1
+        });
         return res.status(200).json(responseHttp(200,true,"Pedidos",allOrder));
     } catch (error) {
         return res.status(400).json(responseHttp(400,false,"Error en el servidor",null));
@@ -53,19 +55,25 @@ export const getAllOrderByUser=async (req:Request,res:Response)=>{
 export const getOrderById=async (req:Request,res:Response)=>{
     try {
         const idOrder=req.params.idOrder;
-        const orderFound=await Order.findById(idOrder.toString()).populate('user').populate('listProducts.product');
+        const orderFound=await Order.findOne({_id:idOrder.toString()}).populate('user').populate('listProducts.product');
         return res.status(200).json(responseHttp(200,true,"Pedido encontrado",orderFound));
     } catch (error) {
         return res.status(400).json(responseHttp(400,false,"Error en el servidor",null));
     }
 }
 
-export const finishOrderById=async (req:Request,res:Response)=>{
+export const changeStatusOrderById=async (req:Request,res:Response)=>{
     try {
         const idOrder=req.params.idOrder;
-        await Order.findOneAndUpdate({_id:idOrder.toString()},{statusOrder:"Finalized"});
+        const data=req.body;
+        const {statusOrder}=data;
+        if(statusOrder==="Canceled"){
+            await Order.findOneAndUpdate({_id:idOrder.toString()},{statusOrder:statusOrder,status:"disabled"});
+        }else{
+            await Order.findOneAndUpdate({_id:idOrder.toString()},{statusOrder:statusOrder,status:"enabled"});
+        }
         const orderUpdated=await Order.findOne({_id:idOrder}).populate('user').populate('listProducts.product');
-        return res.status(200).json(responseHttp(200,true,"Pedido finalizado",orderUpdated));
+        return res.status(200).json(responseHttp(200,true,`Pedido en estado ${statusOrder==="Pending" ? "pendiente":statusOrder==="In process"?"en proceso":statusOrder==="Sent"? "enviado":statusOrder==="Finalized"?"finalizado":statusOrder==="Canceled"?"cancelado":""}`,orderUpdated));
     } catch (error) {
         return res.status(400).json(responseHttp(400,false,"Error en el servidor",null));
     }

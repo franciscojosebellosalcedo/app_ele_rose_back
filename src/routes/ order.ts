@@ -8,6 +8,6 @@ router.post("/",checkAuthorization,controller.saveOrder);
 router.get("/",checkAuthorization,controller.getAllOrder);
 router.get("/:idOrder",checkAuthorization,controller.getOrderById);
 router.get("/allOrders/:idUser",checkAuthorization,controller.getAllOrderByUser);
-router.put("/:idOrder",checkAuthorization,controller.finishOrderById);
+router.put("/:idOrder",checkAuthorization,controller.changeStatusOrderById);
 
 export default router;
