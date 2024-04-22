@@ -40,9 +40,6 @@ export const verifyEmailUser=async (req:Request,res:Response)=>{
         if(!userFound){
             return res.status(404).json(responseHttp(404,false,"Asegurate de estar registrado"));
         }
-        if(userFound.tokenResetPassword.length>0){
-            return res.status(200).json(responseHttp(200,true,"Revisa tu correo electrónico y sigue las intrucciones"));
-        }
         const dataPayload={"_id":userFound._id,"exp":1679741712};
         const token=jwt.sign({_id:dataPayload._id},process.env.SECRET_TOKEN_RESET_PASSWORD as string,{algorithm:"HS256"});
         await User.findOneAndUpdate({_id:userFound._id},{tokenResetPassword:token});
@@ -98,7 +95,7 @@ export const loginUserPage=async (req:Request,res:Response)=>{
             return res.status(400).json(responseHttp(400,false,"Correo o contraseña no valida"));
         }
         if(userFound.isAdmin===false){
-            const payload={name:userFound.name,phone:userFound.phone,address:userFound.address,email:userFound.email,_id:userFound._id};
+            const payload={name:userFound.name,phone:userFound.phone,address:userFound.address,email:userFound.email,_id:userFound._id,createdAt:userFound?.createdAt,updatedAt:userFound?.updatedAt};
             const accessToken=jwt.sign({_id:payload._id},process.env.SECRET_ACCESS_TOKEN as string,{algorithm:"HS256"});
             const refressToken=jwt.sign({_id:payload._id},process.env.SECRET_REFRESS_TOKEN as string,{algorithm:"HS256"});
             return res.status(200).json(responseHttp(200,true,"Credenciales validas",{user:payload,refressToken,accessToken}));
@@ -123,7 +120,7 @@ export const getNewAccessToken=async (req:Request,res:Response)=>{
                 const idUser=Object(data)._id;
                 const userFound=await User.findOne({_id:idUser});
                 if(userFound){
-                    const dataToken={name:userFound?.name,email:userFound?.email,_id:userFound?._id,phone:userFound.phone,address:userFound.address};
+                    const dataToken={name:userFound?.name,email:userFound?.email,_id:userFound?._id,phone:userFound.phone,address:userFound.address,createdAt:userFound?.createdAt,updatedAt:userFound?.updatedAt};
                     const newAccessToken=jwt.sign(dataToken,(process.env.SECRET_ACCESS_TOKEN as string));
                     const newRefressToken=jwt.sign(dataToken,(process.env.SECRET_REFRESS_TOKEN as string));
                     await userFound.save();
@@ -150,7 +147,7 @@ export const userLogin=async (req:Request,res:Response)=>{
             return res.status(400).json(responseHttp(400,false,"Correo o contraseña no valida"));
         }
         if(userFound.isAdmin){
-            const dataUser={name:userFound?.name,email:userFound?.email,_id:userFound?._id};
+            const dataUser={name:userFound?.name,email:userFound?.email,_id:userFound?._id,createdAt:userFound?.createdAt,updatedAt:userFound?.updatedAt};
             const accessToken=jwt.sign(dataUser,process.env.SECRET_ACCESS_TOKEN as string,{algorithm:"HS256"});
             userFound.save();
             const refressToken=jwt.sign(dataUser,process.env.SECRET_REFRESS_TOKEN as string,{algorithm:"HS256"});
@@ -236,7 +233,7 @@ export const updateUser= async (req:Request,res:Response)=>{
             const responseUpdated=await User.findOneAndUpdate({_id:id},{...dataNew});
             if(responseUpdated){
                 const userUpdate=await User.findOne({_id:id});
-                return res.status(200).json(responseHttp(200,true,"Datos actualizados correctamente",{_id:userUpdate?._id,name:userFound?.name,email:userFound?.email,phone:userFound?.phone,address:userFound?.address}));
+                return res.status(200).json(responseHttp(200,true,"Datos actualizados correctamente",{_id:userUpdate?._id,name:userUpdate?.name,email:userUpdate?.email,phone:userUpdate?.phone,address:userUpdate?.address,createdAt:userUpdate?.createdAt,updatedAt:userUpdate?.updatedAt}));
             }
             return res.status(400).json(responseHttp(400,false,"Error al actualizar el usuario"));
         }

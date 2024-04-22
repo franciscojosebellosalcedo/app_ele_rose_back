@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import {responseHttp } from "../utils/utils";
-import Order from "../models/ order";
+import Order from "../models/order";
 import { sendMessageWhatsapp } from "../config/whatsapp";
+import Product from "../models/product";
 
 
 export const saveOrder=async (req:Request,res:Response)=>{
@@ -67,6 +68,22 @@ export const changeStatusOrderById=async (req:Request,res:Response)=>{
         const idOrder=req.params.idOrder;
         const data=req.body;
         const {statusOrder}=data;
+        if(statusOrder=== "In process" ){
+            const orderFound= await Order.findOne({_id: idOrder});
+            const listProducts= orderFound?.listProducts;
+            if(listProducts && listProducts.length>0){
+                for (let index = 0; index < listProducts.length; index++) {
+                    const itemProduct = listProducts[index];
+                    if(itemProduct.product && itemProduct.amount){
+                        const productFound= await Product.findOne({_id: itemProduct.product.toString()});
+                        if(productFound && productFound.amount >= itemProduct.amount){
+                            await Product.updateOne({_id: itemProduct.product?.toString()},{amount: productFound.amount - itemProduct.amount})
+                        }
+                    }
+                    
+                }
+            }
+        }
         if(statusOrder==="Canceled"){
             await Order.findOneAndUpdate({_id:idOrder.toString()},{statusOrder:statusOrder,status:"disabled"});
         }else{
