@@ -43,7 +43,7 @@ export const deleteProduct=async (req:Request,res:Response)=>{
             return res.status(400).json(responseHttp(400,false,"Este producto pertence al slider y es el último elemento, debes dejar por lo menos un elemento en el slider",null));
         }
         await ItemSlider.deleteOne({valueItem:id});
-        const productDeleted=await Product.findByIdAndDelete({_id:id});
+        const productDeleted=await Product.findByIdAndUpdate({_id:id}, {status: false});
         if(!productDeleted){
             return res.status(400).json(responseHttp(400,false,"Error al eliminar el producto",null));
         }

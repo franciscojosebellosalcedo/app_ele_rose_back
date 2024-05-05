@@ -44,6 +44,10 @@ const productSchema=new mongoose.Schema({
     imagen:{
         type:String,
         default:""
+    },
+    status:{
+        type: Boolean,
+        default: true
     }
 },{timestamps:true});
 

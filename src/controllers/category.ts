@@ -47,7 +47,7 @@ export const getAllCategory=async (req:Request,res:Response)=>{
 export const deleteCategory=async (req:Request,res:Response)=>{
     try {
         const id=req.params.id;
-        const categoryDeleted=await Category.findByIdAndDelete({_id:id});
+        const categoryDeleted=await Category.findByIdAndUpdate({_id:id}, {status: false});
         if(!categoryDeleted){
             return res.status(400).json(responseHttp(400,false,"Error al eliminar la categoria",null));
         }

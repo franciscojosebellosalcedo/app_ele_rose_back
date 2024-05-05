@@ -12,6 +12,10 @@ const collectionSchema=new mongoose.Schema({
     isAssociatedSlider:{
         type:Boolean,
         default:false
+    },
+    status:{
+        type: Boolean,
+        default: true
     }
 },{
     timestamps:true

@@ -8,6 +8,10 @@ const categorySchema=new mongoose.Schema({
     imagen:{
         type:String,
         trim:true
+    },
+    status:{
+        type: Boolean,
+        default: true
     }
 },{timestamps:true});
 

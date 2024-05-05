@@ -17,6 +17,10 @@ const contactSchema=new Schema({
     message:{
         type:String,
         trim:true
+    },
+    status:{
+        type: Boolean,
+        default: true
     }
 },{timestamps:true});
 

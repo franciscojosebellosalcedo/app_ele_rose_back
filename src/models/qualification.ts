@@ -22,6 +22,10 @@ const qualificationSchema=new mongoose.Schema({
     product:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Product"
+    },
+    status:{
+        type: Boolean,
+        default: true
     }
 },{timestamps:true});
 

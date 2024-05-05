@@ -8,6 +8,10 @@ const itemSliderSchema=new mongoose.Schema({
     },
     valueItem:{
         type:mongoose.Schema.Types.ObjectId,
+    },
+    status:{
+        type: Boolean,
+        default: true
     }
 },{timestamps:true});
 
