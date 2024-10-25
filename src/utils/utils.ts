@@ -1,3 +1,7 @@
+import {
+  deleteFile,
+  UploadcareSimpleAuthSchema,
+} from '@uploadcare/rest-client';
 
 export const responseHttp = (
   status: number,
@@ -11,6 +15,52 @@ export const responseHttp = (
     message,
     data,
   };
+};
+
+export const splitUrlImagen = (url: any)=>{
+  const parts = url.split("/");
+  return parts[3]
+  
+}
+
+export const getListSearch = (fields: string[], value: any)=>{
+
+	const listObject : { $or: any[] } = { $or: [] };
+
+	for (let index = 0; index < fields.length; index++) {
+
+		const field = fields[index];
+
+		const data : any = {};
+		data[`${field}`] = { $regex: value, $options: "i" };
+
+		listObject.$or.push(data)
+
+	}
+
+	return listObject;
+}
+
+export const deleteFileFromUploadcare = async (fileId: any) => {
+  try {
+
+    const uploadcareSimpleAuthSchema = new UploadcareSimpleAuthSchema({
+      publicKey: process.env.REACT_APP_PUBLIC_KEY_UPLOADCARE as string,
+      secretKey: process.env.REACT_APP_SECRET_KEY_UPLOADCARE as string,
+    });
+    
+    await deleteFile(
+      {
+        uuid: fileId,
+      },
+      { authSchema: uploadcareSimpleAuthSchema }
+    );
+    
+  } catch (error) {
+    
+    throw new Error("Error en eliminar la imagen de uploadcare");
+
+  }
 };
 
 export const  capitalizeNameProduct=(str:string)=> {

@@ -8,6 +8,7 @@ config();
 import { connectToDB } from "./config/db";
 import http from 'http';
 import { initSocket } from "./socket/socket";
+import { initSeeders } from "./initSeeders";
 
 const app=express();
 
@@ -25,4 +26,7 @@ app.get("/",(req,res)=>res.send("Welcome API Ele Rose"));
 app.use("/api/ele-rose",routers);
 server.listen(process.env.PORT_SERVER);
 console.log(`server runnig on port ${process.env.PORT_SERVER} http://localhost:${process.env.PORT_SERVER}`);
+
 connectToDB();
+
+initSeeders();

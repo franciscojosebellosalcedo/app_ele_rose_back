@@ -138,18 +138,25 @@ export const getNewAccessToken=async (req:Request,res:Response)=>{
 export const userLogin=async (req:Request,res:Response)=>{
     try{
         const data=req.body;
+
         const userFound=await User.findOne({email:data.email});
+
         if(!userFound){
             return res.status(400).json(responseHttp(400,false,"Correo o contraseña no valida"));
         }
+
         const isPasswordValid=await bcrypt.compare(data.password,(userFound?.password as string));
         if(!isPasswordValid){
             return res.status(400).json(responseHttp(400,false,"Correo o contraseña no valida"));
         }
+
         if(userFound.isAdmin){
+
             const dataUser={name:userFound?.name,email:userFound?.email,_id:userFound?._id,createdAt:userFound?.createdAt,updatedAt:userFound?.updatedAt};
             const accessToken=jwt.sign(dataUser,process.env.SECRET_ACCESS_TOKEN as string,{algorithm:"HS256"});
+            
             userFound.save();
+
             const refressToken=jwt.sign(dataUser,process.env.SECRET_REFRESS_TOKEN as string,{algorithm:"HS256"});
             return res.status(200).json(responseHttp(200,true,"Credenciales validas",{user:dataUser,refressToken,accessToken}));
         }
