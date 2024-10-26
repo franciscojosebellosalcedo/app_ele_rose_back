@@ -6,6 +6,7 @@ import ProductRouter from "./product";
 import QualificationRouter from "./qualification";
 import SetRouter from "./set";
 import UserRouter from "./user";
+import ProductImagenRouter from "./productImagen";
 
 const router=Router();
 
@@ -23,5 +24,6 @@ router.use("/order",OrderRouter);
 
 router.use("/infoContact",InfoContactRouter);
 
+router.use("/productImagen",ProductImagenRouter);
 
 export default router;

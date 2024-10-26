@@ -108,7 +108,6 @@ export const saveCategory=async(req:Request,res:Response)=>{
         await deleteFileFromUploadcare(data.imagen);
 
         return res.status(400).json(responseHttp(400,false,"Categoría ya existente",null));
-
         
     } catch (error) {
         return res.status(400).json(responseHttp(400,false,"Error en el servidor",null));

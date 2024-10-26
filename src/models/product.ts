@@ -7,20 +7,17 @@ const productSchema=new mongoose.Schema({
     },
     description:{
         type:String,
+        required: false,
+        default: "",
         trim:true
     },
     set:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Set",
+        type: String,
         required:false
     },
     category:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Category"
-    },
-    isNow:{
-        type:Boolean,
-        default:false
+        type: String,
+        required: true
     },
     amount:{
         type:Number,
@@ -37,13 +34,26 @@ const productSchema=new mongoose.Schema({
         type:Number,
         default:0
     },
-    isAssociatedSlider:{
-        type:Boolean,
-        default:false
+    available: {
+        type: Number,
+        required: true
     },
-    imagen:{
-        type:String,
-        default:""
+    existence: {
+        type: Number,
+        required: true
+    },
+    cost: {
+        type: Number,
+        required: true
+    },
+    haveVariant: {
+        type: Boolean,
+        default: false
+    },
+    typeVariant:{
+        type: String,
+        default: "",
+        required:false
     },
     status:{
         type: Boolean,
