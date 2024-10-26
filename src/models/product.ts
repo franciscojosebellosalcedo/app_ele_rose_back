@@ -9,9 +9,9 @@ const productSchema=new mongoose.Schema({
         type:String,
         trim:true
     },
-    collection:{
+    set:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"Collection",
+        ref:"Set",
         required:false
     },
     category:{

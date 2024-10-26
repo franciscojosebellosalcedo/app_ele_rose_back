@@ -1,12 +1,11 @@
-import {Router} from "express";
-import UserRouter from "./user";
-import CategoryRouter from "./category";
-import ProductRouter from "./product";
-import SetRouter from "./set";
-import ItemSliderRouter from "./itemSlider";
-import QualificationRouter from "./qualification";
+import { Router } from "express";
 import OrderRouter from "./ order";
+import CategoryRouter from "./category";
 import InfoContactRouter from "./infoContact";
+import ProductRouter from "./product";
+import QualificationRouter from "./qualification";
+import SetRouter from "./set";
+import UserRouter from "./user";
 
 const router=Router();
 
@@ -17,8 +16,6 @@ router.use("/category",CategoryRouter);
 router.use("/product",ProductRouter);
 
 router.use("/set",SetRouter);
-
-router.use("/itemSlider",ItemSliderRouter);
 
 router.use("/qualification",QualificationRouter);
 

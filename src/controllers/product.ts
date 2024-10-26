@@ -1,7 +1,6 @@
-import Product from "../models/product";
-import ItemSlider from "../models/itemSlider";
 import { Request, Response } from "express";
-import {capitalizeNameProduct, responseHttp } from "../utils/utils";
+import Product from "../models/product";
+import { capitalizeNameProduct, responseHttp } from "../utils/utils";
 
 
 export const saveProduct=async (req:Request,res:Response)=>{
@@ -17,7 +16,7 @@ export const saveProduct=async (req:Request,res:Response)=>{
             return res.status(400).json(responseHttp(400,false,"Error al crear el producto",null));
         }
         await newProduct.save();
-        const productCreated=await Product.findOne({_id:newProduct._id.toString()}).populate(["category","collection"]);
+        const productCreated=await Product.findOne({_id:newProduct._id.toString()}).populate(["category","set"]);
         return res.status(200).json(responseHttp(200,true,"Producto creado correctamente",productCreated));
     } catch (error) {
         console.log(error);
@@ -27,29 +26,10 @@ export const saveProduct=async (req:Request,res:Response)=>{
 
 export const getAllProduct=async (req:Request,res:Response)=>{
     try {
-        const allProducts=await Product.find().populate('category').populate('collection').sort({createdAt:-1});
+        const allProducts=await Product.find().populate('category').populate('set').sort({createdAt:-1});
         return res.status(200).json(responseHttp(200,true,"Productos",allProducts));
     } catch (error) {
         return res.status(400).json(responseHttp(400,false,"Error al obtener los productos",null));
-    }
-}
-
-export const deleteProduct=async (req:Request,res:Response)=>{
-    try {
-        const id=req.params.id;
-        const itemsSlider=await ItemSlider.find();
-        const itemSliderFound=itemsSlider.find((item)=>item.valueItem?.toString()===id);
-        if(itemsSlider.length===1 && itemSliderFound){
-            return res.status(400).json(responseHttp(400,false,"Este producto pertence al slider y es el último elemento, debes dejar por lo menos un elemento en el slider",null));
-        }
-        await ItemSlider.deleteOne({valueItem:id});
-        const productDeleted=await Product.findByIdAndUpdate({_id:id}, {status: false});
-        if(!productDeleted){
-            return res.status(400).json(responseHttp(400,false,"Error al eliminar el producto",null));
-        }
-        return res.status(200).json(responseHttp(200,true,"Producto eliminado correctamente",null));
-    } catch (error) {
-        return res.status(400).json(responseHttp(400,false,"Error en eliminar el producto",null));
     }
 }
 
@@ -61,7 +41,7 @@ export const updateProduct=async (req:Request,res:Response)=>{
         if(!update){
             return res.status(400).json(responseHttp(400,false,"Error al editar el producto",null));
         }
-        const productUpdated=await Product.findOne({_id:id}).populate(["category","collection"]);
+        const productUpdated=await Product.findOne({_id:id}).populate(["category","set"]);
         return res.status(200).json(responseHttp(200,true,"Producto editado correctamente",productUpdated));
     } catch (error) {
         return res.status(400).json(responseHttp(400,false,"Error en editar el producto",null));
