@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const collectionSchema=new mongoose.Schema({
+const setSchema=new mongoose.Schema({
     name:{
         type:String,
         trim:true
@@ -8,10 +8,6 @@ const collectionSchema=new mongoose.Schema({
     imagen:{
         type:String,
         trim:true
-    },
-    isAssociatedSlider:{
-        type:Boolean,
-        default:false
     },
     status:{
         type: Boolean,
@@ -21,5 +17,5 @@ const collectionSchema=new mongoose.Schema({
     timestamps:true
 });
 
-const Collection=mongoose.model("Collection",collectionSchema);
-export default Collection;
+const Set=mongoose.model("Set",setSchema);
+export default Set;

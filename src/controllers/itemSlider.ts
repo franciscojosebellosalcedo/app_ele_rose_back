@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import {responseHttp } from "../utils/utils";
 import ItemSlider from "../models/itemSlider";
-import Collection from "../models/collection";
+import Collection from "../models/set";
 import Product from "../models/product";
 
 export const deleteItemSlider=async (req:Request,res:Response)=>{
