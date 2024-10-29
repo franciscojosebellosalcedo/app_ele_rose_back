@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import {responseHttp } from "../utils/utils";
-import Qualification from '../models/qualification';
+import Qualification from '../models/qualification.model';
 
 export const saveQualification=async (req:Request,res:Response)=>{
     try {

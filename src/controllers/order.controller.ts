@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import {responseHttp } from "../utils/utils";
-import Order from "../models/order";
+import Order from "../models/order.model";
 import { sendMessageWhatsapp } from "../config/whatsapp";
-import Product from "../models/product";
+import Product from "../models/product.model";
 
 
 export const saveOrder=async (req:Request,res:Response)=>{

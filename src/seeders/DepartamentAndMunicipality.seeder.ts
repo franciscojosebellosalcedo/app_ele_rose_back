@@ -1,7 +1,7 @@
 // seeder departament and municipality
 
-import Departament from "../models/department";
-import Municipality from "../models/municipality";
+import Departament from "../models/department.model";
+import Municipality from "../models/municipality.model";
 
 export const seederDepartamentAndMunicipality = async ()=>{
     try {

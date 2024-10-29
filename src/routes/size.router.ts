@@ -1,9 +1,9 @@
 import { Router } from "express";
-import * as controller from "../controllers/productImagen";
 import { checkAuthorization } from "../middlewares/authorization";
+import * as controller from "../controllers/size.controller";
 
 const router=Router();
 
-router.post("/",  checkAuthorization,  controller.saveProductImagen);
+router.get("/", checkAuthorization , controller.getAllSizes);
 
 export default router;

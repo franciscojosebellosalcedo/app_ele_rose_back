@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Set from "../models/set";
+import Set from "../models/set.model";
 import { deleteFileFromUploadcare, getListSearch, responseHttp, splitUrlImagen } from "../utils/utils";
 
 export const paginateSets = async (req:Request,res:Response)=>{

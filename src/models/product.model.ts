@@ -50,6 +50,10 @@ const productSchema=new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    haveDiscount: {
+        type: Boolean,
+        default: false
+    },
     typeVariant:{
         type: String,
         default: "",

@@ -1,6 +1,6 @@
 // seeder type variant
 
-import TypeVariant from "../models/typeVariant";
+import TypeVariant from "../models/typeVariant.model";
 
 export const seederTypeVariant = async ()=>{
     try {

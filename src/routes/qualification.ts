@@ -1,5 +1,5 @@
 import {Router} from "express";
-import * as controller from "../controllers/qualification";
+import * as controller from "../controllers/qualification.controller";
 import { checkAuthorization } from "../middlewares/authorization";
 
 const router=Router();

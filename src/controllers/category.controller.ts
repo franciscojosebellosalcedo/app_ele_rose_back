@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Category from "../models/category";
+import Category from "../models/category.model";
 import { deleteFileFromUploadcare, getListSearch, responseHttp, splitUrlImagen } from "../utils/utils";
 
 export const paginateCategory = async (req:Request,res:Response)=>{

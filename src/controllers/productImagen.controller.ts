@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { responseHttp } from "../utils/utils";
-import ProductImagen from "../models/productImagen";
+import ProductImagen from "../models/productImagen.model";
 
 export const saveProductImagen = async (req:Request , res:Response)=>{
     try {

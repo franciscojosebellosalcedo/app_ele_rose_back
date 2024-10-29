@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import {responseHttp } from "../utils/utils";
-import InfoContact from "../models/infoContact";
+import InfoContact from "../models/infoContact.model";
 
 export const saveInfoContact=async (req:Request,res:Response)=>{
     try {

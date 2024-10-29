@@ -1,5 +1,5 @@
 import { Router } from "express";
-import * as controller from "../controllers/category";
+import * as controller from "../controllers/category.controller";
 import { checkAuthorization } from "../middlewares/authorization";
 
 const router=Router();

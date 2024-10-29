@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { getAllInfoContact, saveInfoContact } from '../controllers/infoContact';
+import { getAllInfoContact, saveInfoContact } from '../controllers/infoContact.controller';
 
 const infoContactRouter=Router();
 

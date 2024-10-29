@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { isEmailValid, responseHttp } from "../utils/utils";
-import User from "../models/user";
+import User from "../models/user.model";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 dotenv.config();
