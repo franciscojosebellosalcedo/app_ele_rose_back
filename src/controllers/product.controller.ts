@@ -4,6 +4,7 @@ import ProductImagen from "../models/productImagen.model";
 import { capitalizeNameProduct, deleteFileFromUploadcare, getListSearch, responseHttp } from "../utils/utils";
 import { IDataVariant } from "../types";
 import Variant from "../models/variant.model";
+import mongoose from "mongoose";
 
 export const paginateProducts = async (req:Request,res:Response)=>{
     try {
@@ -82,6 +83,7 @@ export const search = async (req:Request,res:Response)=>{
 
 export const saveProduct=async (req:Request,res:Response)=>{
     try {
+
         const data=req.body.product;
         const listImagen=req.body.listImagen;
         const listVariants=req.body.listVariants;
@@ -110,23 +112,24 @@ export const saveProduct=async (req:Request,res:Response)=>{
 
         }
 
-        const productCreated: any = await newProduct.save();
 
         if(listVariants.length > 0){
 
-            await createVariants(productCreated._id, listVariants);
+            await createAndUpdateVariants(newProduct._id, listVariants);
 
         }
 
         for (let index = 0; index < listImagen.length; index++) {
             const imagen = listImagen[index];
-            imagen.product = productCreated._id;
+            imagen.product = newProduct._id;
             
             const productImagenNew = await ProductImagen.create({...imagen});
 
             await productImagenNew.save();
 
         }
+
+        const productCreated = await newProduct.save();
 
         return res.status(201).json(responseHttp(201,true, "Producto creado" , productCreated));
 
@@ -135,7 +138,148 @@ export const saveProduct=async (req:Request,res:Response)=>{
     }
 }
 
-const createVariants = async (idProduct: any, variants: IDataVariant [])=>{
+export const updateProduct=async (req:Request,res:Response)=>{
+    try {
+        const id=req.params.id;
+        const newData=req.body.product;
+        const listImagens=req.body.listImagen;
+        const listVariants=req.body.listVariants;
+        const listRemovedVariants=req.body.listRemovedVariants;
+        const listRemovedImagens=req.body.listRemovedImagens;
+
+
+        if (id || mongoose.Types.ObjectId.isValid(id)) {
+
+            const allProduct = await Product.find();
+
+            const productFound = await Product.findById(id);
+
+            if(productFound){
+
+                const filter = allProduct.filter((product) => product.name !== productFound.name)
+                const bool = filter.some((product) => product.name === newData.name);
+
+                if(bool){
+
+                    await removedImagensUploadcare(listImagens);
+
+                    return res.status(400).json(responseHttp(400,false,"Producto ya existente",null));
+
+                }else{
+
+                    const productUpdated = await Product.findOneAndUpdate({_id: id}, {...newData});
+
+                    if(productUpdated){
+
+                        for (let index = 0; index < listImagens.length; index++) {
+                        
+                            const imagen = listImagens[index];
+                            imagen.product = productUpdated._id;
+                            
+                            const productImagenNew = await ProductImagen.create({...imagen});
+                
+                            await productImagenNew.save();
+                
+                        }
+
+                        await createAndUpdateVariants(productUpdated._id, listVariants);
+
+                        await removedVariants(listRemovedVariants);
+
+                        await removedImagens(listRemovedImagens);
+
+                        return res.status(200).json(responseHttp(200,true,"Producto editado",productUpdated));
+
+
+                    }
+                }
+
+            }else{
+
+                await removedImagensUploadcare(listImagens);
+
+                return res.status(404).json(responseHttp(404,false,"Producto no encontrado",null));
+
+            }
+
+
+        }else{
+
+            await removedImagensUploadcare(listImagens);
+
+            return res.status(404).json(responseHttp(404,false,"Producto no encontrado",null));
+
+        }
+        
+    } catch (error) {
+        return res.status(400).json(responseHttp(400,false,"Error en el servidor",null));
+    }
+}
+
+const removedVariants = async (listId: string[])=>{
+    try {
+
+        for (let index = 0; index < listId.length; index++) {
+            const idVariant = listId[index];
+            if(idVariant || mongoose.Types.ObjectId.isValid(idVariant)){
+
+                const variantFound = await Variant.findById(idVariant);
+                if(variantFound){
+
+                    await Variant.deleteOne({_id: idVariant});
+                    
+                }
+            }
+        }
+        
+    } catch (error) {
+
+        throw new Error("Error al eliminar las variantes");
+        
+    }
+}
+
+const removedImagens = async (list: any[])=>{
+    try {
+
+        for (let index = 0; index < list.length; index++) {
+            const idImagen = list[index];
+            if(idImagen || mongoose.Types.ObjectId.isValid(idImagen)){
+
+                const imagenFound = await ProductImagen.findById(idImagen);
+                if(imagenFound){
+
+                    await deleteFileFromUploadcare(imagenFound.idUpload);
+                    await ProductImagen.deleteOne({_id: idImagen});
+
+                }
+            }
+        }
+        
+    } catch (error) {
+
+        throw new Error("Error al eliminar las imagenes");
+        
+    }
+}
+
+const removedImagensUploadcare = async (list: any[])=>{
+    try {
+
+        for (let index = 0; index < list.length; index++) {
+            const imagen = list[index];
+            await deleteFileFromUploadcare(imagen.idUpload);
+
+        }
+        
+    } catch (error) {
+
+        throw new Error("Error al eliminar las imagenes de uploadcare");
+        
+    }
+}
+
+const createAndUpdateVariants = async (idProduct: any, variants: IDataVariant [])=>{
     try {
 
         for (let index = 0; index < variants.length; index++) {
@@ -144,9 +288,18 @@ const createVariants = async (idProduct: any, variants: IDataVariant [])=>{
 
             const {_id , ...restData} = variant;
 
-            const variantNew = await Variant.create({...restData});
+            if (_id || mongoose.Types.ObjectId.isValid(_id)) {
 
-            await variantNew.save();
+                await Variant.findByIdAndUpdate({_id:_id},{...restData});
+
+            }else{
+
+                const variantNew = await Variant.create({...restData});
+    
+                await variantNew.save();
+            }
+    
+
         }
         
     } catch (error) {
@@ -255,22 +408,48 @@ export const enableProduct=async (req:Request,res:Response)=>{
     }
 }
 
-export const updateProduct=async (req:Request,res:Response)=>{
+export const getOneProductById = async (req:Request , res:Response)=>{
     try {
-        const id=req.params.id;
-        const newData=req.body.product;
-        const listImagens=req.body.listImagen;
-        const listVariants=req.body.listVariants;
-        const listRemovedVariants=req.body.listRemovedVariants;
-        const listRemovedImagens=req.body.listRemovedImagens;
 
-        // const update=await Product.findByIdAndUpdate({_id:id},{...newData});
-        // if(!update){
-        //     return res.status(400).json(responseHttp(400,false,"Error al editar el producto",null));
-        // }
-        // const productUpdated=await Product.findOne({_id:id}).populate(["category","set"]);
-        // return res.status(200).json(responseHttp(200,true,"Producto editado correctamente",productUpdated));
+        const idProduct = req.params.id;
+
+        if(idProduct){
+
+            if (!idProduct || !mongoose.Types.ObjectId.isValid(idProduct)) {
+
+                return res.status(404).json(responseHttp(404,false,"Producto no encontrado",null));
+
+            }
+    
+            const productFound = await Product.findById(idProduct)
+
+            if(productFound){
+
+                const productFoundWithData = await Promise.all([productFound].map(async (product) => {
+    
+                    const listImagen: any[] = await ProductImagen.find({ product: product._id });
+                    const listVariants: any[] = await Variant.find({ product: product._id });
+                    
+                    return {
+                        ...product.toObject(), 
+                        listImagen: listImagen || [], 
+                        listVariants: listVariants || [], 
+                    };
+                }));
+
+                return res.status(200).json(responseHttp(200,true,"Producto encontrado", productFoundWithData[0]));
+
+            }
+
+            return res.status(404).json(responseHttp(404,false,"Producto no encontrado",null));
+
+        }
+
+        return res.status(404).json(responseHttp(404,false,"Producto no encontrado",null));
+        
     } catch (error) {
-        return res.status(400).json(responseHttp(400,false,"Error en editar el producto",null));
+        return res.status(400).json(responseHttp(400,false,"Error en el servidor",null));
+        
     }
 }
+

@@ -10,6 +10,8 @@ router.get("/paginated", checkAuthorization, controller.paginateProducts);
 
 router.get("/", checkAuthorization, controller.getAllProduct);
 
+router.get("/oneProduct/:id", checkAuthorization, controller.getOneProductById);
+
 router.get("/search/:value", checkAuthorization, controller.search);
 
 router.put("/disable/:id", checkAuthorization , controller.disableProduct);
