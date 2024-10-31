@@ -13,6 +13,7 @@ import SizeRouter from "./size.router";
 import ClientRouter from "./client.router";
 import DepartamentRouter from "./departament.router";
 import MunicipalityRouter from "./municipality.router";
+import AddressRouter from "./address.router";
 
 const router=Router();
 
@@ -43,5 +44,7 @@ router.use("/client", ClientRouter);
 router.use("/departament", DepartamentRouter);
 
 router.use("/municipality", MunicipalityRouter);
+
+router.use("/address", AddressRouter);
 
 export default router;

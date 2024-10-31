@@ -2,8 +2,14 @@ import mongoose, { Schema } from "mongoose";
 
 const addressSchema = new Schema(
   {
-    client: {
+
+    entityId: {
       type: String,
+      required: true,
+    },
+
+    entity: {
+      type: Number,
       required: true,
     },
 
