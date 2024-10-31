@@ -66,12 +66,16 @@ export const saveClient = async (req:Request , res:Response)=>{
 
         const dataClient: TClient = req.body;
         
-        const clientFound = await Client.findOne({$or:[
-            { name: {$regex: dataClient.name, $options: "i"} , email: {$regex:  dataClient.email, $options: "i"}, phone: {$regex:  dataClient.phone, $options: "i"} }
-        ]});
+        const clientFound = await Client.findOne({
+            $or: [
+              { name: { $regex: dataClient.name, $options: "i" } },
+              { email: { $regex: dataClient.email, $options: "i" } },
+              { phone: { $regex: dataClient.phone, $options: "i" } },
+            ]
+          });
 
-        if(clientFound){
-
+        if(clientFound !== null && clientFound !== undefined ){
+            
             return res.status(400).json(responseHttp(400,false,"Cliente ya existente", null));
 
         }
