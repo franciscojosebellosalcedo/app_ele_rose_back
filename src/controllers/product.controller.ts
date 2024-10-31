@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import Product from "../models/product.model";
 import ProductImagen from "../models/productImagen.model";
 import { capitalizeNameProduct, deleteFileFromUploadcare, getListSearch, responseHttp } from "../utils/utils";
-import { IDataVariant } from "../types";
+import { TDataVariant } from "../types";
 import Variant from "../models/variant.model";
 import mongoose from "mongoose";
 
@@ -239,11 +239,11 @@ const removedVariants = async (listId: string[])=>{
     }
 }
 
-const removedImagens = async (list: any[])=>{
+const removedImagens = async (listId: string[])=>{
     try {
 
-        for (let index = 0; index < list.length; index++) {
-            const idImagen = list[index];
+        for (let index = 0; index < listId.length; index++) {
+            const idImagen = listId[index];
             if(idImagen || mongoose.Types.ObjectId.isValid(idImagen)){
 
                 const imagenFound = await ProductImagen.findById(idImagen);
@@ -279,7 +279,7 @@ const removedImagensUploadcare = async (list: any[])=>{
     }
 }
 
-const createAndUpdateVariants = async (idProduct: any, variants: IDataVariant [])=>{
+const createAndUpdateVariants = async (idProduct: any, variants: TDataVariant [])=>{
     try {
 
         for (let index = 0; index < variants.length; index++) {

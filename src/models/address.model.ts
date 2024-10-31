@@ -2,20 +2,36 @@ import mongoose, { Schema } from "mongoose";
 
 const addressSchema = new Schema(
   {
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+    client: {
+      type: String,
+      required: true,
     },
 
     departament: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Departament",
+      type: String,
+      required: true
     },
 
     municipality: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Municipality",
+      type: String,
+      required: true
     },
+
+    referencePoint: {
+      type: String,
+      required: false,
+      default: ""
+    },
+
+    description: {
+      type: String,
+      required: true,
+    },
+
+    status: {
+      type: Boolean,
+      default: true
+    }
     
   },
   { timestamps: true }

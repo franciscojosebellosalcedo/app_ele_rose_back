@@ -10,6 +10,9 @@ import SetRouter from "./set.router";
 import TypeVariantRouter from "./typeVariant.router";
 import UserRouter from "./user.router";
 import SizeRouter from "./size.router";
+import ClientRouter from "./client.router";
+import DepartamentRouter from "./departament.router";
+import MunicipalityRouter from "./municipality.router";
 
 const router=Router();
 
@@ -34,5 +37,11 @@ router.use("/color", ColorRouter);
 router.use("/size", SizeRouter);
 
 router.use("/typeVariant", TypeVariantRouter);
+
+router.use("/client", ClientRouter);
+
+router.use("/departament", DepartamentRouter);
+
+router.use("/municipality", MunicipalityRouter);
 
 export default router;
