@@ -17,6 +17,12 @@ export const initSocket = (server: HttpServer) => {
 		console.log('Nuevo cliente conectado', socket.id);
     listClientConected.push(socket.id);
 
+    socket.on("mensaje",(data)=>{
+      
+      io.emit("mensaje", "yaaa");
+
+    })
+
     socket.on("get:amount", ()=>{
       
       io.emit("get:amount", listClientConected.length);
