@@ -69,7 +69,6 @@ export const saveClient = async (req:Request , res:Response)=>{
         const clientFound = await Client.findOne({
             $or: [
               { name: { $regex: dataClient.name, $options: "i" } },
-              { email: { $regex: dataClient.email, $options: "i" } },
               { phone: { $regex: dataClient.phone, $options: "i" } },
             ]
           });
@@ -87,7 +86,7 @@ export const saveClient = async (req:Request , res:Response)=>{
         return res.status(201).json(responseHttp(201, true ,"Cliente creado", clientCreated));
         
     } catch (error) {
-
+        
         return res.status(400).json(responseHttp(400,false,"Error en el servidor", null));
         
     }
@@ -180,7 +179,7 @@ export const updateClientById = async (req:Request , res:Response)=>{
 
                 const filterClients = allClients.filter((client) => client.name !== clientFound.name);
 
-                const bool = filterClients.some((client) => client.name?.trim().toLocaleLowerCase() === newData.name?.trim().toLocaleLowerCase() || client.phone === newData.phone || client.email?.trim().toLocaleLowerCase() === newData.email?.trim().toLocaleLowerCase());
+                const bool = filterClients.some((client) => client.name?.trim().toLocaleLowerCase() === newData.name?.trim().toLocaleLowerCase() || client.phone === newData.phone);
 
                 if(bool){
 

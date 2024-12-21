@@ -14,6 +14,7 @@ import ClientRouter from "./client.router";
 import DepartamentRouter from "./departament.router";
 import MunicipalityRouter from "./municipality.router";
 import AddressRouter from "./address.router";
+import GrouperClientRouter from "./grouperClient.router";
 
 const router=Router();
 
@@ -46,5 +47,7 @@ router.use("/departament", DepartamentRouter);
 router.use("/municipality", MunicipalityRouter);
 
 router.use("/address", AddressRouter);
+
+router.use("/grouperClient", GrouperClientRouter);
 
 export default router;

@@ -3,6 +3,11 @@ import {
   UploadcareSimpleAuthSchema,
 } from '@uploadcare/rest-client';
 
+export const ORDER_ADDRESS_ENTITY ={
+  client: 1,
+  groupClient: 2
+}
+
 export const responseHttp = (
   status: number,
   response: boolean,

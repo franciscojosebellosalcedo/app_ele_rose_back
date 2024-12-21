@@ -1,9 +1,14 @@
 import mongoose from "mongoose";
 
-const clientSchema=new mongoose.Schema({
+const grouperClientSchema=new mongoose.Schema({
     name:{
         type:String,
         trim:true
+    },
+    clientId:{
+        type:String,
+        trim:true,
+        required: true
     },
     phone:{
         type: String,
@@ -18,5 +23,5 @@ const clientSchema=new mongoose.Schema({
     timestamps:true
 });
 
-const Client=mongoose.model("Client",clientSchema);
-export default Client;
+const GrouperClient=mongoose.model("GrouperClient",grouperClientSchema);
+export default GrouperClient;
