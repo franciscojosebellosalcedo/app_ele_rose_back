@@ -7,7 +7,7 @@ export const saveListAddress = async (req:Request , res:Response)=>{
     try {
 
         const data = req.body;
-
+        
         for (let index = 0; index < data.length; index++) {
 
             const address = data[index];
@@ -29,7 +29,7 @@ export const saveListAddress = async (req:Request , res:Response)=>{
         return res.status(201).json(responseHttp(201, true ,"Direcciones creadas", null));
         
     } catch (error) {
-
+        
         return res.status(400).json(responseHttp(400,false,"Error en el servidor", null));
         
     }

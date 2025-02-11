@@ -15,6 +15,10 @@ import DepartamentRouter from "./departament.router";
 import MunicipalityRouter from "./municipality.router";
 import AddressRouter from "./address.router";
 import GrouperClientRouter from "./grouperClient.router";
+import ConditionPaymentRouter from "./conditionPayment.router";
+import PaymentShapeRouter from "./paymentShape.router";
+import SupplierRouter from "./supplier.router";
+import TypeSupplierRouter from "./typeSupplier.router";
 
 const router=Router();
 
@@ -36,6 +40,8 @@ router.use("/productImagen",ProductImagenRouter);
 
 router.use("/color", ColorRouter);
 
+router.use("/typeSupplier", TypeSupplierRouter);
+
 router.use("/size", SizeRouter);
 
 router.use("/typeVariant", TypeVariantRouter);
@@ -49,5 +55,11 @@ router.use("/municipality", MunicipalityRouter);
 router.use("/address", AddressRouter);
 
 router.use("/grouperClient", GrouperClientRouter);
+
+router.use("/conditionPayment", ConditionPaymentRouter);
+
+router.use("/paymentShape", PaymentShapeRouter);
+
+router.use("/supplier", SupplierRouter);
 
 export default router;

@@ -18,4 +18,8 @@ router.get("/oneClient/:id",  checkAuthorization,  controller.getOneClientById);
 
 router.put("/:id", checkAuthorization , controller.updateClientById);
 
+router.put("/disable/:id", checkAuthorization , controller.disableClient);
+
+router.put("/enable/:id", checkAuthorization , controller.enableClient);
+
 export default router;

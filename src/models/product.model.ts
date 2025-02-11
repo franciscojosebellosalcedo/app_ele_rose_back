@@ -11,11 +11,11 @@ const productSchema=new mongoose.Schema({
         default: "",
         trim:true
     },
-    set:{
+    setId:{
         type: String,
         required:false
     },
-    category:{
+    categoryId:{
         type: String,
         required: true
     },
@@ -23,41 +23,17 @@ const productSchema=new mongoose.Schema({
         type:Number,
         default:0
     },
-    percentage:{
+    price:{
         type:Number,
-        default:0
-    },
-    realPrice:{
-        type:Number,
-    },
-    pricePromotion:{
-        type:Number,
-        default:0
-    },
-    available: {
-        type: Number,
-        required: true
     },
     existence: {
         type: Number,
-        required: true
+        required: true,
+        default:0
     },
     cost: {
         type: Number,
         required: true
-    },
-    haveVariant: {
-        type: Boolean,
-        default: false
-    },
-    haveDiscount: {
-        type: Boolean,
-        default: false
-    },
-    typeVariant:{
-        type: String,
-        default: "",
-        required:false
     },
     status:{
         type: Boolean,

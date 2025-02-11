@@ -1,10 +1,15 @@
-export interface TDataVariant{
-    _id: any
-    valueVariant: string
-    amount: number
-    product: string
-    typeVariant: string
+
+export interface ITypesSupplier{
+    name: string
+    status: boolean
 }
+export interface ISupplier {
+    name: string
+    email: string
+    phone: string
+    typeId: string
+    status: number
+  }
 
 export interface IGrouperClientModel {
     _id : string
@@ -30,13 +35,13 @@ export interface IDataGrouperClientModel {
     addressGrouper : IAddresModel[]
 }
 
-export interface TClient{
+export interface IClient{
     name: string
     phone: string
     email: string
     status: number
 }
-export interface TClientModel{
+export interface IClientModel{
     _id: string
     name: string
     phone: string

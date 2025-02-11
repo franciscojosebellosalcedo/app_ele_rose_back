@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import { getListSearch, responseHttp } from "../utils/utils";
-import { TClient } from "../types";
+import { IClient } from "../types";
 import Client from "../models/client.model";
 import mongoose from "mongoose";
 
+// paginate clients
 export const paginateClients = async (req:Request,res:Response)=>{
     try {
 
@@ -37,6 +38,65 @@ export const paginateClients = async (req:Request,res:Response)=>{
     }
 }
 
+// disable client by id
+export const disableClient=async (req:Request,res:Response)=>{
+    try { 
+        const id=req.params.id;
+
+        const clientUpdated=await Client.findByIdAndUpdate( {_id:id} ,{ status: false});
+
+        if(!clientUpdated){
+
+            return res.status(400).json(responseHttp(400,false,"Error en deshabilitar el cliente",null));
+        }
+
+        const clientFound=await Client.findOne({_id: id});
+
+        if(!clientFound){
+
+            return res.status(404).json(responseHttp(404, false , "Cliente no encontrado",null));
+
+        }
+
+        return res.status(200).json(responseHttp(200, true ,"Cliente deshabilitado", clientFound));
+        
+    } catch (error) {
+
+        return res.status(400).json(responseHttp(400,false,"Error en el servidor",null));
+        
+    }
+}
+
+// enable client by id
+export const enableClient=async (req:Request,res:Response)=>{
+    try { 
+        const id=req.params.id;
+
+        const clientUpdated=await Client.findByIdAndUpdate( {_id:id} ,{ status: true});
+
+        if(!clientUpdated){
+
+            return res.status(400).json(responseHttp(400,false,"Error en habilitar el cliente",null));
+        }
+
+        const clientFound=await Client.findOne({_id: id});
+
+        if(!clientFound){
+
+            return res.status(404).json(responseHttp(404, false , "Cliente no encontrado",null));
+
+        }
+
+        return res.status(200).json(responseHttp(200, true ,"Cliente habilitado", clientFound));
+        
+    } catch (error) {
+
+        return res.status(400).json(responseHttp(400,false,"Error en el servidor",null));
+        
+    }
+}
+
+// search client by value
 export const search = async (req:Request,res:Response)=>{
     try {
 
@@ -61,10 +121,11 @@ export const search = async (req:Request,res:Response)=>{
     }
 }
 
+// save new client
 export const saveClient = async (req:Request , res:Response)=>{
     try {
 
-        const dataClient: TClient = req.body;
+        const dataClient: IClient = req.body;
         
         const clientFound = await Client.findOne({
             $or: [
@@ -92,6 +153,7 @@ export const saveClient = async (req:Request , res:Response)=>{
     }
 }
 
+// get all clients
 export const getAllClients = async (req:Request , res:Response)=>{
     try {
 
@@ -106,6 +168,7 @@ export const getAllClients = async (req:Request , res:Response)=>{
     }
 }
 
+// get one client by id
 export const getOneClientById = async (req:Request , res:Response)=>{
     try {
 
@@ -135,6 +198,7 @@ export const getOneClientById = async (req:Request , res:Response)=>{
     }
 }
 
+// get client by id
 export const getClientById = async (req:Request , res:Response)=>{
     try {
 
@@ -163,6 +227,7 @@ export const getClientById = async (req:Request , res:Response)=>{
     }
 }
 
+// update client by id
 export const updateClientById = async (req:Request , res:Response)=>{
     try {
 

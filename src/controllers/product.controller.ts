@@ -2,8 +2,6 @@ import { Request, Response } from "express";
 import Product from "../models/product.model";
 import ProductImagen from "../models/productImagen.model";
 import { capitalizeNameProduct, deleteFileFromUploadcare, getListSearch, responseHttp } from "../utils/utils";
-import { TDataVariant } from "../types";
-import Variant from "../models/variant.model";
 import mongoose from "mongoose";
 
 export const paginateProducts = async (req:Request,res:Response)=>{
@@ -72,7 +70,7 @@ export const search = async (req:Request,res:Response)=>{
             };
         }));
 
-        return res.status(200).json(responseHttp( 200 , true , "Productos encontradas", productsWithImages));
+        return res.status(200).json(responseHttp( 200 , true , "Productos encontrados", productsWithImages));
 
     } catch (error) {
 
@@ -86,7 +84,6 @@ export const saveProduct=async (req:Request,res:Response)=>{
 
         const data=req.body.product;
         const listImagen=req.body.listImagen;
-        const listVariants=req.body.listVariants;
 
         const productFound=await Product.findOne({name:data.name});
 
@@ -109,13 +106,6 @@ export const saveProduct=async (req:Request,res:Response)=>{
         if(!newProduct){
 
             return res.status(400).json(responseHttp(400,false,"Error al crear el producto",null));
-
-        }
-
-
-        if(listVariants.length > 0){
-
-            await createAndUpdateVariants(newProduct._id, listVariants);
 
         }
 
@@ -143,8 +133,6 @@ export const updateProduct=async (req:Request,res:Response)=>{
         const id=req.params.id;
         const newData=req.body.product;
         const listImagens=req.body.listImagen;
-        const listVariants=req.body.listVariants;
-        const listRemovedVariants=req.body.listRemovedVariants;
         const listRemovedImagens=req.body.listRemovedImagens;
 
 
@@ -182,10 +170,6 @@ export const updateProduct=async (req:Request,res:Response)=>{
                 
                         }
 
-                        await createAndUpdateVariants(productUpdated._id, listVariants);
-
-                        await removedVariants(listRemovedVariants);
-
                         await removedImagens(listRemovedImagens);
 
                         return res.status(200).json(responseHttp(200,true,"Producto editado",productUpdated));
@@ -213,29 +197,6 @@ export const updateProduct=async (req:Request,res:Response)=>{
         
     } catch (error) {
         return res.status(400).json(responseHttp(400,false,"Error en el servidor",null));
-    }
-}
-
-const removedVariants = async (listId: string[])=>{
-    try {
-
-        for (let index = 0; index < listId.length; index++) {
-            const idVariant = listId[index];
-            if(idVariant || mongoose.Types.ObjectId.isValid(idVariant)){
-
-                const variantFound = await Variant.findById(idVariant);
-                if(variantFound){
-
-                    await Variant.deleteOne({_id: idVariant});
-                    
-                }
-            }
-        }
-        
-    } catch (error) {
-
-        throw new Error("Error al eliminar las variantes");
-        
     }
 }
 
@@ -279,36 +240,6 @@ const removedImagensUploadcare = async (list: any[])=>{
     }
 }
 
-const createAndUpdateVariants = async (idProduct: any, variants: TDataVariant [])=>{
-    try {
-
-        for (let index = 0; index < variants.length; index++) {
-            const variant = variants[index];
-            variant.product = idProduct;
-
-            const {_id , ...restData} = variant;
-
-            if (_id || mongoose.Types.ObjectId.isValid(_id)) {
-
-                await Variant.findByIdAndUpdate({_id:_id},{...restData});
-
-            }else{
-
-                const variantNew = await Variant.create({...restData});
-    
-                await variantNew.save();
-            }
-    
-
-        }
-        
-    } catch (error) {
-        
-        throw new Error("Error en crear las variaantes");
-        
-    }
-}
-
 export const getAllProduct=async (req:Request,res:Response)=>{
     try {
 
@@ -317,12 +248,10 @@ export const getAllProduct=async (req:Request,res:Response)=>{
         const productsWithImages = await Promise.all(allProducts.map(async (pro) => {
 
             const listImagen: any[] = await ProductImagen.find({ product: pro._id });
-            const listVariants: any[] = await Variant.find({ product: pro._id });
             
             return {
                 ...pro.toObject(), 
                 listImagen: listImagen || [], 
-                listVariants: listVariants || [], 
             };
 
         }));
@@ -351,12 +280,10 @@ export const disableProduct=async (req:Request,res:Response)=>{
 
             const productsWithImages = await Promise.all([productWithDataNew].map(async (product) => {
                 const listImagen: any[] = await ProductImagen.find({ product: product._id });
-                const listVariants: any[] = await Variant.find({ product: product._id });
                 
                 return {
                     ...product.toObject(), 
                     listImagen: listImagen || [], 
-                    listVariants: listVariants || [], 
                 };
             }));
 
@@ -388,12 +315,10 @@ export const enableProduct=async (req:Request,res:Response)=>{
 
             const productsWithImages = await Promise.all([productWithDataNew].map(async (product) => {
                 const listImagen: any[] = await ProductImagen.find({ product: product._id });
-                const listVariants: any[] = await Variant.find({ product: product._id });
                 
                 return {
                     ...product.toObject(), 
                     listImagen: listImagen || [], 
-                    listVariants: listVariants || [], 
                 };
             }));
 
@@ -428,12 +353,10 @@ export const getOneProductById = async (req:Request , res:Response)=>{
                 const productFoundWithData = await Promise.all([productFound].map(async (product) => {
     
                     const listImagen: any[] = await ProductImagen.find({ product: product._id });
-                    const listVariants: any[] = await Variant.find({ product: product._id });
                     
                     return {
                         ...product.toObject(), 
                         listImagen: listImagen || [], 
-                        listVariants: listVariants || [], 
                     };
                 }));
 
